@@ -143,10 +143,10 @@ private:
 template<class PointerType> class PointerData : public BrlData {
 public:
     PointerData(const char*  magic,
-                PointerType* pointer) : BrlData(magic), m_pointer(pointer) {}
+                PointerType* pointer, bool owned = true) : BrlData(magic), m_pointer(pointer), m_owned(owned) {}
 
     ~PointerData(void) override {
-        if (m_pointer != nullptr)
+        if (m_owned && m_pointer != nullptr)
             delete m_pointer;
     }
 
@@ -158,6 +158,8 @@ public:
         return m_pointer;
     }
 
+protected:
+    bool m_owned;
 private:
     PointerType* m_pointer;
 
@@ -182,7 +184,7 @@ public:
 
 class VectorListElementData : public PointerData<BRLCAD::VectorList::Element> {
 public:
-    VectorListElementData(BRLCAD::VectorList::Element* pointer) : PointerData(VectorListElementMagic, pointer) {}
+    VectorListElementData(BRLCAD::VectorList::Element* pointer, bool owned = true) : PointerData(VectorListElementMagic, pointer, owned) {}
 };
 
 

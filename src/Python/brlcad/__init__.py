@@ -47,7 +47,28 @@ from .Sketch import Sketch, SketchSegment, SketchLine, SketchCircularArc, Sketch
 from .Sphere import Sphere
 from .Torus import Torus
 from .Unknown import Unknown
-from .VectorList import VectorList, VectorListElement, VectorListPointDraw, VectorListPointSize, VectorListLineMove, VectorListLineDraw, VectorListLineWidth, VectorListTriangleStart, VectorListTriangleMove, VectorListTriangleDraw, VectorListTriangleEnd, VectorListTriangleVertexNormal, VectorListPolygonStart, VectorListPolygonMove, VectorListPolygonDraw, VectorListPolygonEnd, VectorListPolygonVertexNormal, VectorListDisplaySpace, VectorListModelSpace
+from .VectorList import (
+    ElementType,
+    VectorList,
+    VectorListElement,
+    VectorListPointDraw,
+    VectorListPointSize,
+    VectorListLineMove,
+    VectorListLineDraw,
+    VectorListLineWidth,
+    VectorListTriangleStart,
+    VectorListTriangleMove,
+    VectorListTriangleDraw,
+    VectorListTriangleEnd,
+    VectorListTriangleVertexNormal,
+    VectorListPolygonStart,
+    VectorListPolygonMove,
+    VectorListPolygonDraw,
+    VectorListPolygonEnd,
+    VectorListPolygonVertexNormal,
+    VectorListDisplaySpace,
+    VectorListModelSpace,
+)
 
 
 __all__ = [
@@ -82,6 +103,7 @@ __all__ = [
     'Torus',
     'TreeNode',
     'Unknown',
+    'ElementType',
     'VectorList',
     'VectorListDisplaySpace',
     'VectorListElement',

@@ -61,21 +61,25 @@ namespace BRLCAD {
             virtual ~Segment(void) {}
 
             void                Destroy(void);
-            virtual Segment*    Clone(void) const      = 0;
-            virtual SegmentType Type(void) const       = 0;
+            virtual SegmentType Type(void) const                          = 0;
+            virtual Segment*    Clone(void) const                         = 0;
 
-            virtual Vector2D    StartPoint(void) const = 0;
-            virtual Vector2D    EndPoint(void) const   = 0;
+            virtual Vector2D    StartPoint(void) const                    = 0;
+            virtual void        SetStartPoint(const Vector2D& startPoint) = 0;
+            virtual Vector2D    EndPoint(void) const                      = 0;
+            virtual void        SetEndPoint(const Vector2D& endPoint)     = 0;
 
             bool                Reverse(void) const;
             void                SetReverse(bool reverse);
 
         protected:
             rt_sketch_internal* m_sketch;
+            size_t              m_index;
 
-            Segment(void) : m_sketch(nullptr)  {}
-            Segment(const Segment& original) : m_sketch(original.m_sketch) {}
-            Segment(rt_sketch_internal* sketch) : m_sketch(sketch) {}
+            Segment(void) : m_sketch(nullptr), m_index(-1) {}
+            Segment(const Segment& original) : m_sketch(original.m_sketch), m_index(original.m_index) {}
+            Segment(rt_sketch_internal* sketch,
+                    size_t              index) : m_sketch(sketch), m_index(index) {}
 
             const Segment& operator=(const Segment& original) {return *this;}
         };
@@ -96,15 +100,16 @@ namespace BRLCAD {
             Segment*    Clone(void) const override;
 
             Vector2D    StartPoint(void) const override;
-            void        SetStartPoint(const Vector2D& startPoint);
+            void        SetStartPoint(const Vector2D& startPoint) override;
             Vector2D    EndPoint(void) const override;
-            void        SetEndPoint(const Vector2D& endPoint);
+            void        SetEndPoint(const Vector2D& endPoint) override;
 
         private:
             line_seg* m_lineSegment;
 
             Line(line_seg*           lineSegment,
-                 rt_sketch_internal* sketch) : Segment(sketch), m_lineSegment(lineSegment) {}
+                 rt_sketch_internal* sketch,
+                 size_t              index) : Segment(sketch, index), m_lineSegment(lineSegment) {}
             friend class Sketch;
         };
 
@@ -124,9 +129,9 @@ namespace BRLCAD {
             Segment*           Clone(void) const override;
 
             Vector2D           StartPoint(void) const override;
-            void               SetStartPoint(const Vector2D& startPoint);
+            void               SetStartPoint(const Vector2D& startPoint) override;
             Vector2D           EndPoint(void) const override;
-            void               SetEndPoint(const Vector2D& endPoint);
+            void               SetEndPoint(const Vector2D& endPoint) override;
 
             Vector3D           Center(void) const;
             void               SetCenter(Vector2D c);
@@ -141,7 +146,8 @@ namespace BRLCAD {
             carc_seg* m_circularArcSegment;
 
             CircularArc(carc_seg*           circularArcSegment,
-                        rt_sketch_internal* sketch) : Segment(sketch), m_circularArcSegment(circularArcSegment) {}
+                        rt_sketch_internal* sketch,
+                        size_t              index) : Segment(sketch, index), m_circularArcSegment(circularArcSegment) {}
             friend class Sketch;
         };
 
@@ -161,9 +167,9 @@ namespace BRLCAD {
             Segment*    Clone(void) const override;
 
             Vector2D    StartPoint(void) const override;
-            void        SetStartPoint(const Vector2D& startPoint);
+            void        SetStartPoint(const Vector2D& startPoint) override;
             Vector2D    EndPoint(void) const override;
-            void        SetEndPoint(const Vector2D& endPoint);
+            void        SetEndPoint(const Vector2D& endPoint) override;
 
             size_t      Order(void) const;
             bool        IsRational(void) const;
@@ -182,7 +188,8 @@ namespace BRLCAD {
             nurb_seg* m_nurbSegment;
 
             Nurb(nurb_seg*           nurbSegment,
-                 rt_sketch_internal* sketch) : Segment(sketch), m_nurbSegment(nurbSegment) {}
+                 rt_sketch_internal* sketch,
+                 size_t              index) : Segment(sketch, index), m_nurbSegment(nurbSegment) {}
 
             friend class Sketch;
         };
@@ -203,9 +210,9 @@ namespace BRLCAD {
             Segment*      Clone(void) const override;
 
             Vector2D      StartPoint(void) const override;
-            void          SetStartPoint(const Vector2D& startPoint);
+            void          SetStartPoint(const Vector2D& startPoint) override;
             Vector2D      EndPoint(void) const override;
-            void          SetEndPoint(const Vector2D& endPoint);
+            void          SetEndPoint(const Vector2D& endPoint) override;
 
             size_t        Degree(void) const;
             Vector2D      ControlPoint(size_t index) const;
@@ -215,7 +222,8 @@ namespace BRLCAD {
             bezier_seg* m_bezierSegment;
 
             Bezier(bezier_seg*         bezierSegment,
-                   rt_sketch_internal* sketch) : Segment(sketch), m_bezierSegment(bezierSegment) {}
+                   rt_sketch_internal* sketch,
+                   size_t              index) : Segment(sketch, index), m_bezierSegment(bezierSegment) {}
 
             friend class Sketch;
         };

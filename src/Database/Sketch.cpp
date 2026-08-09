@@ -155,7 +155,7 @@ static size_t SwapVertex
 }
 
 
-static void AppendSegment
+static size_t AppendSegment
 (
     void*               segment,
     rt_sketch_internal* sketch
@@ -178,10 +178,12 @@ static void AppendSegment
     sketch->curve.reverse[sketch->curve.count] = 0;
     sketch->curve.segment[sketch->curve.count] = segment;
     ++(sketch->curve.count);
+
+    return sketch->curve.count - 1;
 }
 
 
-static void InsertSegment
+static size_t InsertSegment
 (
     void*               segment,
     size_t              index,
@@ -202,6 +204,8 @@ static void InsertSegment
     sketch->curve.reverse[index] = 0;
     sketch->curve.segment[index] = segment;
     ++(sketch->curve.count);
+
+    return index;
 }
 
 
@@ -287,6 +291,25 @@ const Sketch& Sketch::operator=(
 
 void Sketch::Segment::Destroy(void) {
     delete this;
+}
+
+
+bool Sketch::Segment::Reverse(void) const {
+    bool ret = false;
+
+    if ((m_sketch != nullptr) && (m_index < m_sketch->curve.count))
+        ret = (m_sketch->curve.reverse[m_index] != 0);
+
+    return ret;
+}
+
+
+void Sketch::Segment::SetReverse
+(
+    bool reverse
+) {
+    if ((m_sketch != nullptr) && (m_index < m_sketch->curve.count))
+        m_sketch->curve.reverse[m_index] = reverse ? 1 : 0;
 }
 
 
@@ -893,7 +916,7 @@ void Sketch::Get
             switch (*magic) {
                 case CURVE_LSEG_MAGIC: {
                     line_seg* line = reinterpret_cast<line_seg*>(Internal()->curve.segment[index]);
-                    Line      lineClass(line, const_cast<rt_sketch_internal*>(Internal()));
+                    Line      lineClass(line, const_cast<rt_sketch_internal*>(Internal()), index);
 
                     callback(lineClass);
                     }
@@ -901,7 +924,7 @@ void Sketch::Get
 
                 case CURVE_CARC_MAGIC: {
                     carc_seg*   carc = reinterpret_cast<carc_seg*>(Internal()->curve.segment[index]);
-                    CircularArc arcClass(carc, const_cast<rt_sketch_internal*>(Internal()));
+                    CircularArc arcClass(carc, const_cast<rt_sketch_internal*>(Internal()), index);
 
                     callback(arcClass);
                     }
@@ -909,7 +932,7 @@ void Sketch::Get
 
                 case CURVE_NURB_MAGIC: {
                     nurb_seg* nurb = reinterpret_cast<nurb_seg*>(Internal()->curve.segment[index]);
-                    Nurb      nurbClass(nurb, const_cast<rt_sketch_internal*>(Internal()));
+                    Nurb      nurbClass(nurb, const_cast<rt_sketch_internal*>(Internal()), index);
 
                     callback(nurbClass);
                     }
@@ -917,7 +940,7 @@ void Sketch::Get
 
                 case CURVE_BEZIER_MAGIC: {
                     bezier_seg* bezier = reinterpret_cast<bezier_seg*>(Internal()->curve.segment[index]);
-                    Bezier      bezierClass(bezier, const_cast<rt_sketch_internal*>(Internal()));
+                    Bezier      bezierClass(bezier, const_cast<rt_sketch_internal*>(Internal()), index);
 
                     callback(bezierClass);
                     }
@@ -939,7 +962,7 @@ void Sketch::Get
             switch (*magic) {
                 case CURVE_LSEG_MAGIC: {
                     line_seg* line = reinterpret_cast<line_seg*>(Internal()->curve.segment[index]);
-                    Line      lineClass(line, static_cast<rt_sketch_internal*>(Internal()));
+                    Line      lineClass(line, static_cast<rt_sketch_internal*>(Internal()), index);
 
                     callback(lineClass);
                     }
@@ -947,7 +970,7 @@ void Sketch::Get
 
                 case CURVE_CARC_MAGIC: {
                     carc_seg*   carc = reinterpret_cast<carc_seg*>(Internal()->curve.segment[index]);
-                    CircularArc arcClass(carc, static_cast<rt_sketch_internal*>(Internal()));
+                    CircularArc arcClass(carc, static_cast<rt_sketch_internal*>(Internal()), index);
 
                     callback(arcClass);
                     }
@@ -955,7 +978,7 @@ void Sketch::Get
 
                 case CURVE_NURB_MAGIC: {
                     nurb_seg* nurb = reinterpret_cast<nurb_seg*>(Internal()->curve.segment[index]);
-                    Nurb      nurbClass(nurb, static_cast<rt_sketch_internal*>(Internal()));
+                    Nurb      nurbClass(nurb, static_cast<rt_sketch_internal*>(Internal()), index);
 
                     callback(nurbClass);
                     }
@@ -963,7 +986,7 @@ void Sketch::Get
 
                 case CURVE_BEZIER_MAGIC: {
                     bezier_seg* bezier = reinterpret_cast<bezier_seg*>(Internal()->curve.segment[index]);
-                    Bezier      bezierClass(bezier, static_cast<rt_sketch_internal*>(Internal()));
+                    Bezier      bezierClass(bezier, static_cast<rt_sketch_internal*>(Internal()), index);
 
                     callback(bezierClass);
                     }
@@ -1000,8 +1023,9 @@ Sketch::Line* Sketch::AppendLine(void) {
             AddToVerts(zero, *sketch);
         }
 
-        AppendSegment(line, sketch);
-        ret = new Line(line, sketch);
+        size_t newIndex = AppendSegment(line, sketch);
+
+        ret = new Line(line, sketch, newIndex);
     }
     else
         BU_UNSETJUMP;
@@ -1031,8 +1055,9 @@ Sketch::Line* Sketch::InsertLine
                 AddToVerts(zero, *sketch);
             }
 
-            InsertSegment(line, index, sketch);
-            ret = new Line(line, sketch);
+            size_t newIndex = InsertSegment(line, index, sketch);
+
+            ret = new Line(line, sketch, newIndex);
         }
         else
             BU_UNSETJUMP;
@@ -1059,8 +1084,9 @@ Sketch::CircularArc* Sketch::AppendArc(void) {
             AddToVerts(zero, *sketch);
         }
 
-        AppendSegment(carc, sketch);
-        ret = new CircularArc(carc, sketch);
+        size_t newIndex = AppendSegment(carc, sketch);
+
+        ret = new CircularArc(carc, sketch, newIndex);
     }
     else
         BU_UNSETJUMP;
@@ -1090,8 +1116,9 @@ Sketch::CircularArc* Sketch::InsertArc
                 AddToVerts(zero, *sketch);
             }
 
-            InsertSegment(carc, index, sketch);
-            ret = new CircularArc(carc, sketch);
+            size_t newIndex = InsertSegment(carc, index, sketch);
+
+            ret = new CircularArc(carc, sketch, newIndex);
         }
         else
             BU_UNSETJUMP;
@@ -1118,8 +1145,9 @@ Sketch::Nurb* Sketch::AppendNurb(void) {
             AddToVerts(zero, *sketch);
         }
 
-        AppendSegment(nurb, sketch);
-        ret = new Nurb(nurb, sketch);
+        size_t newIndex = AppendSegment(nurb, sketch);
+
+        ret = new Nurb(nurb, sketch, newIndex);
 
     }
     else
@@ -1150,8 +1178,9 @@ Sketch::Nurb* Sketch::InsertNurb
                 AddToVerts(zero, *sketch);
             }
 
-            InsertSegment(nurb, index, sketch);
-            ret = new Nurb(nurb, sketch);
+            size_t newIndex = InsertSegment(nurb, index, sketch);
+
+            ret = new Nurb(nurb, sketch, newIndex);
         }
         else
             BU_UNSETJUMP;
@@ -1178,8 +1207,9 @@ Sketch::Bezier* Sketch::AppendBezier(void) {
             AddToVerts(zero, *sketch);
         }
 
-        AppendSegment(bezier, sketch);
-        ret = new Bezier(bezier, sketch);
+        size_t newIndex = AppendSegment(bezier, sketch);
+
+        ret = new Bezier(bezier, sketch, newIndex);
     }
     else
         BU_UNSETJUMP;
@@ -1209,8 +1239,9 @@ Sketch::Bezier* Sketch::InsertBezier
                 AddToVerts(zero, *sketch);
             }
 
-            InsertSegment(bezier, index, sketch);
-            ret = new Bezier(bezier, sketch);
+            size_t newIndex = InsertSegment(bezier, index, sketch);
+
+            ret = new Bezier(bezier, sketch, newIndex);
         }
         else
             BU_UNSETJUMP;

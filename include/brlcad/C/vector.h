@@ -33,6 +33,13 @@ extern "C" {
 #endif
 
 
+typedef BrlHandle BrlVector2D;
+
+
+double BrlVector2DX(BrlVector2D vector);
+double BrlVector2DY(BrlVector2D vector);
+
+
 typedef BrlHandle BrlVector3D;
 
 

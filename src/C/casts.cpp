@@ -42,7 +42,8 @@ BrlData* CastHandle
     if (handle != nullptr) {
         const char* handleMagic = handle->Magic();
 
-        if ((handleMagic == Vector3DMagic) ||
+        if ((handleMagic == Vector2DMagic) ||
+            (handleMagic == Vector3DMagic) ||
             (handleMagic == VectorListMagic) ||
             (handleMagic == VectorListElementMagic) ||
             (handleMagic == ConstDatabaseMagic) ||
@@ -86,6 +87,25 @@ BrlData* CastHandle
             ret = handle;
         else
             bu_log("CastHandle: invalid handle");
+    }
+
+    return ret;
+}
+
+
+Vector2D* CastVector2D
+(
+    BrlHandle handle
+) {
+    Vector2D* ret = nullptr;
+
+    if (handle != nullptr) {
+        const char* handleMagic = handle->Magic();
+
+        if (handleMagic == Vector2DMagic)
+            ret = &static_cast<Vector2DData*>(handle)->Value();
+        else
+            bu_log("CastVector2D: wrong handle");
     }
 
     return ret;

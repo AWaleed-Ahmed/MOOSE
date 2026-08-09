@@ -33,6 +33,44 @@
 using namespace BRLCAD;
 
 
+double BrlVector2DX
+(
+    BrlVector2D vector
+) {
+    double ret = 0.;
+
+    if (vector != nullptr) {
+        Vector2D* vector2D = CastVector2D(vector);
+
+        assert(vector2D != nullptr);
+
+        if (vector2D != nullptr)
+            ret = vector2D->coordinates[0];
+    }
+
+    return ret;
+}
+
+
+double BrlVector2DY
+(
+    BrlVector2D vector
+) {
+    double ret = 0.;
+
+    if (vector != nullptr) {
+        Vector2D* vector2D = CastVector2D(vector);
+
+        assert(vector2D != nullptr);
+
+        if (vector2D != nullptr)
+            ret = vector2D->coordinates[1];
+    }
+
+    return ret;
+}
+
+
 double BrlVector3DX
 (
     BrlVector3D vector

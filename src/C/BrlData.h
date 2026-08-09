@@ -72,6 +72,7 @@ protected:
 };
 
 
+extern const char* const Vector2DMagic;
 extern const char* const Vector3DMagic;
 extern const char* const VectorListMagic;
 extern const char* const VectorListElementMagic;
@@ -167,6 +168,12 @@ private:
     PointerData(void);
     PointerData(const PointerData& original);
     const PointerData& operator=(const PointerData& original);
+};
+
+
+class Vector2DData : public ValueData<BRLCAD::Vector2D> {
+public:
+    Vector2DData(const BRLCAD::Vector2D& value) : ValueData(Vector2DMagic, value) {}
 };
 
 

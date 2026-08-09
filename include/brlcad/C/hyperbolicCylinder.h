@@ -57,7 +57,7 @@ BRLCAD_MOOSE_EXPORT void                  BrlHyperbolicCylinderSetDepth(BrlHyper
                                                                         double                depthX, double depthY, double depthZ);
 
 BRLCAD_MOOSE_EXPORT double                BrlHyperbolicCylinderHalfWidth(BrlHyperbolicCylinder hyperbolicCylinder);
-BRLCAD_MOOSE_EXPORT void                  BrlHyperbolicCylinderSetHalfWidth(BrlHyperbolicCylinder hyperbolicCylinder, 
+BRLCAD_MOOSE_EXPORT void                  BrlHyperbolicCylinderSetHalfWidth(BrlHyperbolicCylinder hyperbolicCylinder,
                                                                             double                halfWidth);
 
 BRLCAD_MOOSE_EXPORT double                BrlHyperbolicCylinderApexAsymptoteDistance(BrlHyperbolicCylinder hyperbolicCylinder);

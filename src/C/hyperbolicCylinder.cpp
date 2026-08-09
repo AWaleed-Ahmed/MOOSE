@@ -29,8 +29,6 @@
 
 #include <brlcad/C/hyperbolicCylinder.h>
 
-#include "BrlData.h"
-
 #include "casts.h"
 
 

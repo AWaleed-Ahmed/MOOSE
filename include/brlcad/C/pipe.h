@@ -36,10 +36,32 @@ extern "C" {
 
 
 typedef BrlObject BrlPipe;
-typedef BrlHandle BrlPipeControlPoint;
 
 
 BRLCAD_MOOSE_EXPORT BrlPipe             BrlNewPipe(void);
+
+
+typedef BrlHandle BrlPipeControlPoint;
+
+
+BRLCAD_MOOSE_EXPORT BrlVector3D         BrlPipeControlPointPoint(BrlPipeControlPoint controlPoint);
+BRLCAD_MOOSE_EXPORT void                BrlPipeControlPointSetPoint(BrlPipeControlPoint controlPoint,
+                                                                    double              pointX,
+                                                                    double              pointY,
+                                                                    double              pointZ);
+
+BRLCAD_MOOSE_EXPORT double              BrlPipeControlPointInnerDiameter(BrlPipeControlPoint controlPoint);
+BRLCAD_MOOSE_EXPORT void                BrlPipeControlPointSetInnerDiameter(BrlPipeControlPoint controlPoint,
+                                                                            double              id);
+
+BRLCAD_MOOSE_EXPORT double              BrlPipeControlPointOuterDiameter(BrlPipeControlPoint controlPoint);
+BRLCAD_MOOSE_EXPORT void                BrlPipeControlPointSetOuterDiameter(BrlPipeControlPoint controlPoint,
+                                                                            double              od);
+
+BRLCAD_MOOSE_EXPORT double              BrlPipeControlPointBendRadius(BrlPipeControlPoint controlPoint);
+BRLCAD_MOOSE_EXPORT void                BrlPipeControlPointSetBendRadius(BrlPipeControlPoint controlPoint,
+                                                                         double              br);
+
 
 BRLCAD_MOOSE_EXPORT int                 BrlPipeNumberOfControlPoints(BrlPipe pipe);
 BRLCAD_MOOSE_EXPORT BrlPipeControlPoint BrlPipeGetControlPoint(BrlPipe pipe,
@@ -61,24 +83,6 @@ BRLCAD_MOOSE_EXPORT BrlPipeControlPoint BrlPipeInsertControlPoint(BrlPipe pipe,
                                                                   double  bendRadius);
 BRLCAD_MOOSE_EXPORT void                BrlPipeDeleteControlPoint(BrlPipe pipe,
                                                                   int     index);
-
-BRLCAD_MOOSE_EXPORT BrlVector3D         BrlPipeControlPointPoint(BrlPipeControlPoint controlPoint);
-BRLCAD_MOOSE_EXPORT void                BrlPipeControlPointSetPoint(BrlPipeControlPoint controlPoint,
-                                                                    double              pointX,
-                                                                    double              pointY,
-                                                                    double              pointZ);
-
-BRLCAD_MOOSE_EXPORT double              BrlPipeControlPointInnerDiameter(BrlPipeControlPoint controlPoint);
-BRLCAD_MOOSE_EXPORT void                BrlPipeControlPointSetInnerDiameter(BrlPipeControlPoint controlPoint,
-                                                                            double              id);
-
-BRLCAD_MOOSE_EXPORT double              BrlPipeControlPointOuterDiameter(BrlPipeControlPoint controlPoint);
-BRLCAD_MOOSE_EXPORT void                BrlPipeControlPointSetOuterDiameter(BrlPipeControlPoint controlPoint,
-                                                                            double              od);
-
-BRLCAD_MOOSE_EXPORT double              BrlPipeControlPointBendRadius(BrlPipeControlPoint controlPoint);
-BRLCAD_MOOSE_EXPORT void                BrlPipeControlPointSetBendRadius(BrlPipeControlPoint controlPoint,
-                                                                         double              br);
 
 BRLCAD_MOOSE_EXPORT const char*         BrlPipeClassName(void);
 

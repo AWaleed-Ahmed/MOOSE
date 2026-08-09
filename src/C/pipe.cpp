@@ -36,115 +36,7 @@ using namespace BRLCAD;
 
 
 BrlPipe BrlNewPipe(void) {
-    return DowncastObject(new Pipe());
-}
-
-
-int BrlPipeNumberOfControlPoints
-(
-    BrlPipe pipe
-) {
-    int ret = 0;
-
-    if (pipe != nullptr) {
-        Pipe* pIntern = CastPipe(pipe);
-
-        assert(pIntern != nullptr);
-
-        if (pIntern != nullptr)
-            ret = pIntern->NumberOfControlPoints();
-    }
-
-    return ret;
-}
-
-
-BrlPipeControlPoint BrlPipeGetControlPoint
-(
-    BrlPipe pipe,
-    int index
-) {
-    BrlPipeControlPoint ret = nullptr;
-
-    if (pipe != nullptr) {
-        Pipe* pIntern = CastPipe(pipe);
-
-        assert(pIntern != nullptr);
-
-        if (pIntern != nullptr)
-            ret = new PipeControlPointData(pIntern->GetControlPoint(index));
-    }
-
-    return ret;
-}
-
-
-BrlPipeControlPoint BrlPipeAppendControlPoint
-(
-    BrlPipe pipe,
-    double  pointX, double pointY, double pointZ,
-    double  innerDiameter,
-    double  outerDiameter,
-    double  bendRadius
-) {
-    BrlPipeControlPoint ret = nullptr;
-
-    if (pipe != nullptr) {
-        Pipe* pIntern = CastPipe(pipe);
-
-        assert(pIntern != nullptr);
-
-        if (pIntern != nullptr) {
-            Vector3D pt(pointX, pointY, pointZ);
-
-            ret = new PipeControlPointData(pIntern->AppendControlPoint(pt, innerDiameter, outerDiameter, bendRadius));
-        }
-    }
-
-    return ret;
-}
-
-
-BrlPipeControlPoint BrlPipeInsertControlPoint
-(
-    BrlPipe pipe,
-    int index,
-    double  pointX, double pointY, double pointZ,
-    double  innerDiameter,
-    double  outerDiameter,
-    double  bendRadius
-) {
-    BrlPipeControlPoint ret = nullptr;
-
-    if (pipe != nullptr) {
-        Pipe* pIntern = CastPipe(pipe);
-
-        assert(pIntern != nullptr);
-
-        if (pIntern != nullptr) {
-            Vector3D pt(pointX, pointY, pointZ);
-
-            ret = new PipeControlPointData(pIntern->InsertControlPoint(index, pt, innerDiameter, outerDiameter, bendRadius));
-        }
-    }
-
-    return ret;
-}
-
-
-void BrlPipeDeleteControlPoint
-(
-    BrlPipe pipe,
-    int index
-) {
-    if (pipe != nullptr) {
-        Pipe* pIntern = CastPipe(pipe);
-
-        assert(pIntern != nullptr);
-
-        if (pIntern != nullptr)
-            pIntern->DeleteControlPoint(index);
-    }
+    return new PipeData(new Pipe());
 }
 
 
@@ -287,6 +179,114 @@ void BrlPipeControlPointSetBendRadius
 
         if (cpIntern != nullptr)
             cpIntern->SetBendRadius(br);
+    }
+}
+
+
+int BrlPipeNumberOfControlPoints
+(
+    BrlPipe pipe
+) {
+    int ret = 0;
+
+    if (pipe != nullptr) {
+        Pipe* pIntern = CastPipe(pipe);
+
+        assert(pIntern != nullptr);
+
+        if (pIntern != nullptr)
+            ret = pIntern->NumberOfControlPoints();
+    }
+
+    return ret;
+}
+
+
+BrlPipeControlPoint BrlPipeGetControlPoint
+(
+    BrlPipe pipe,
+    int index
+) {
+    BrlPipeControlPoint ret = nullptr;
+
+    if (pipe != nullptr) {
+        Pipe* pIntern = CastPipe(pipe);
+
+        assert(pIntern != nullptr);
+
+        if (pIntern != nullptr)
+            ret = new PipeControlPointData(pIntern->GetControlPoint(index));
+    }
+
+    return ret;
+}
+
+
+BrlPipeControlPoint BrlPipeAppendControlPoint
+(
+    BrlPipe pipe,
+    double  pointX, double pointY, double pointZ,
+    double  innerDiameter,
+    double  outerDiameter,
+    double  bendRadius
+) {
+    BrlPipeControlPoint ret = nullptr;
+
+    if (pipe != nullptr) {
+        Pipe* pIntern = CastPipe(pipe);
+
+        assert(pIntern != nullptr);
+
+        if (pIntern != nullptr) {
+            Vector3D pt(pointX, pointY, pointZ);
+
+            ret = new PipeControlPointData(pIntern->AppendControlPoint(pt, innerDiameter, outerDiameter, bendRadius));
+        }
+    }
+
+    return ret;
+}
+
+
+BrlPipeControlPoint BrlPipeInsertControlPoint
+(
+    BrlPipe pipe,
+    int index,
+    double  pointX, double pointY, double pointZ,
+    double  innerDiameter,
+    double  outerDiameter,
+    double  bendRadius
+) {
+    BrlPipeControlPoint ret = nullptr;
+
+    if (pipe != nullptr) {
+        Pipe* pIntern = CastPipe(pipe);
+
+        assert(pIntern != nullptr);
+
+        if (pIntern != nullptr) {
+            Vector3D pt(pointX, pointY, pointZ);
+
+            ret = new PipeControlPointData(pIntern->InsertControlPoint(index, pt, innerDiameter, outerDiameter, bendRadius));
+        }
+    }
+
+    return ret;
+}
+
+
+void BrlPipeDeleteControlPoint
+(
+    BrlPipe pipe,
+    int index
+) {
+    if (pipe != nullptr) {
+        Pipe* pIntern = CastPipe(pipe);
+
+        assert(pIntern != nullptr);
+
+        if (pIntern != nullptr)
+            pIntern->DeleteControlPoint(index);
     }
 }
 

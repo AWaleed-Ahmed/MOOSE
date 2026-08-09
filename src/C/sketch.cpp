@@ -25,8 +25,6 @@
 
 #include <cassert>
 
-#include "rt/geom.h"
-
 #include <brlcad/Database/Sketch.h>
 
 #include <brlcad/C/sketch.h>
@@ -37,929 +35,880 @@
 using namespace BRLCAD;
 
 
+static BrlSketchSegment DowncastSketchSegment
+(
+    BRLCAD::Sketch::Segment* segment
+) {
+    BrlSketchSegment ret = nullptr;
+
+    if (segment != nullptr) {
+        switch (segment->Type()) {
+        case Sketch::Segment::SegmentType::Null:
+            ret = new SketchSegmentData(segment);
+            break;
+
+        case Sketch::Segment::SegmentType::Line:
+            ret = new SketchLineData(static_cast<Sketch::Line*>(segment));
+            break;
+
+        case Sketch::Segment::SegmentType::CircularArc:
+            ret = new SketchCircularArcData(static_cast<Sketch::CircularArc*>(segment));
+            break;
+
+        case Sketch::Segment::SegmentType::Nurb:
+            ret = new SketchNurbData(static_cast<Sketch::Nurb*>(segment));
+            break;
+
+        case Sketch::Segment::SegmentType::Bezier:
+            ret = new SketchBezierData(static_cast<Sketch::Bezier*>(segment));
+            break;
+
+        default:
+            ret = new SketchLineData(static_cast<Sketch::Line*>(segment));
+        }
+    }
+
+    return ret;
+}
+
+
 BrlSketch BrlNewSketch(void) {
     return DowncastObject(new Sketch());
 }
 
 
-BrlVector3D BrlSketchEmbeddingPlaneX
+BrlSketchSegmentSegmentType BrlSketchSegmentType
 (
-    BrlSketch              sketch
+    BrlSketchSegment segment
 ) {
-    BrlVector3D ret = nullptr;
-    if (sketch != nullptr) {
-        Sketch* sIntern = CastSketch(sketch);
-        assert(sIntern != nullptr);
-        if (sIntern != nullptr)
-            ret = new Vector3DData(sIntern->EmbeddingPlaneX());
-    }
-    return ret;
-}
+    BrlSketchSegmentSegmentType ret = BrlSketchSegmentSegmentTypeNull;
 
-
-void BrlSketchSetEmbeddingPlaneX
-(
-    BrlSketch              sketch,
-    double                 x,
-    double                 y,
-    double                 z
-) {
-    if (sketch != nullptr) {
-        Sketch* sIntern = CastSketch(sketch);
-        assert(sIntern != nullptr);
-        if (sIntern != nullptr) {
-            Vector3D u(x, y, z);
-            sIntern->SetEmbeddingPlaneX(u);
-        }
-    }
-}
-
-
-BrlVector3D BrlSketchEmbeddingPlaneY
-(
-    BrlSketch              sketch
-) {
-    BrlVector3D ret = nullptr;
-    if (sketch != nullptr) {
-        Sketch* sIntern = CastSketch(sketch);
-        assert(sIntern != nullptr);
-        if (sIntern != nullptr)
-            ret = new Vector3DData(sIntern->EmbeddingPlaneY());
-    }
-    return ret;
-}
-
-
-void BrlSketchSetEmbeddingPlaneY
-(
-    BrlSketch              sketch,
-    double                 x,
-    double                 y,
-    double                 z
-) {
-    if (sketch != nullptr) {
-        Sketch* sIntern = CastSketch(sketch);
-        assert(sIntern != nullptr);
-        if (sIntern != nullptr) {
-            Vector3D v(x, y, z);
-            sIntern->SetEmbeddingPlaneY(v);
-        }
-    }
-}
-
-
-BrlVector3D BrlSketchEmbeddingPlaneOrigin
-(
-    BrlSketch              sketch
-) {
-    BrlVector3D ret = nullptr;
-    if (sketch != nullptr) {
-        Sketch* sIntern = CastSketch(sketch);
-        assert(sIntern != nullptr);
-        if (sIntern != nullptr)
-            ret = new Vector3DData(sIntern->EmbeddingPlaneOrigin());
-    }
-    return ret;
-}
-
-
-void BrlSketchSetEmbeddingPlaneOrigin
-(
-    BrlSketch              sketch,
-    double                 x,
-    double                 y,
-    double                 z
-) {
-    if (sketch != nullptr) {
-        Sketch* sIntern = CastSketch(sketch);
-        assert(sIntern != nullptr);
-        if (sIntern != nullptr) {
-            Vector3D pt(x, y, z);
-            sIntern->SetEmbeddingPlaneOrigin(pt);
-        }
-    }
-}
-
-
-int BrlSketchNumberOfSegments
-(
-    BrlSketch              sketch
-) {
-    int ret = 0;
-    if (sketch != nullptr) {
-        Sketch* sIntern = CastSketch(sketch);
-        assert(sIntern != nullptr);
-        if (sIntern != nullptr)
-            ret = sIntern->NumberOfSegments();
-    }
-    return ret;
-}
-
-
-BrlSketchSegment BrlSketchGetSegment
-(
-    BrlSketch              sketch,
-    int index
-) {
-    BrlSketchSegment ret = nullptr;
-    if (sketch != nullptr) {
-        Sketch* sIntern = CastSketch(sketch);
-        assert(sIntern != nullptr);
-        if (sIntern != nullptr)
-            ret = new SketchSegmentData(sIntern->Get(index));
-    }
-    return ret;
-}
-
-
-BrlSketchLine BrlSketchAppendLine
-(
-    BrlSketch              sketch
-) {
-    BrlSketchLine ret = nullptr;
-    if (sketch != nullptr) {
-        Sketch* sIntern = CastSketch(sketch);
-        assert(sIntern != nullptr);
-        if (sIntern != nullptr)
-            ret = new SketchLineData(sIntern->AppendLine());
-    }
-    return ret;
-}
-
-
-BrlSketchLine BrlSketchInsertLine
-(
-    BrlSketch              sketch,
-    int index
-) {
-    BrlSketchLine ret = nullptr;
-    if (sketch != nullptr) {
-        Sketch* sIntern = CastSketch(sketch);
-        assert(sIntern != nullptr);
-        if (sIntern != nullptr)
-            ret = new SketchLineData(sIntern->InsertLine(index));
-    }
-    return ret;
-}
-
-
-BrlSketchCircularArc BrlSketchAppendArc
-(
-    BrlSketch              sketch
-) {
-    BrlSketchCircularArc ret = nullptr;
-    if (sketch != nullptr) {
-        Sketch* sIntern = CastSketch(sketch);
-        assert(sIntern != nullptr);
-        if (sIntern != nullptr)
-            ret = new SketchCircularArcData(sIntern->AppendArc());
-    }
-    return ret;
-}
-
-
-BrlSketchCircularArc BrlSketchInsertArc
-(
-    BrlSketch              sketch,
-    int index
-) {
-    BrlSketchCircularArc ret = nullptr;
-    if (sketch != nullptr) {
-        Sketch* sIntern = CastSketch(sketch);
-        assert(sIntern != nullptr);
-        if (sIntern != nullptr)
-            ret = new SketchCircularArcData(sIntern->InsertArc(index));
-    }
-    return ret;
-}
-
-
-BrlSketchNurb BrlSketchAppendNurb
-(
-    BrlSketch              sketch
-) {
-    BrlSketchNurb ret = nullptr;
-    if (sketch != nullptr) {
-        Sketch* sIntern = CastSketch(sketch);
-        assert(sIntern != nullptr);
-        if (sIntern != nullptr)
-            ret = new SketchNurbData(sIntern->AppendNurb());
-    }
-    return ret;
-}
-
-
-BrlSketchNurb BrlSketchInsertNurb
-(
-    BrlSketch              sketch,
-    int index
-) {
-    BrlSketchNurb ret = nullptr;
-    if (sketch != nullptr) {
-        Sketch* sIntern = CastSketch(sketch);
-        assert(sIntern != nullptr);
-        if (sIntern != nullptr)
-            ret = new SketchNurbData(sIntern->InsertNurb(index));
-    }
-    return ret;
-}
-
-
-BrlSketchBezier BrlSketchAppendBezier
-(
-    BrlSketch              sketch
-) {
-    BrlSketchBezier ret = nullptr;
-    if (sketch != nullptr) {
-        Sketch* sIntern = CastSketch(sketch);
-        assert(sIntern != nullptr);
-        if (sIntern != nullptr)
-            ret = new SketchBezierData(sIntern->AppendBezier());
-    }
-    return ret;
-}
-
-
-BrlSketchBezier BrlSketchInsertBezier
-(
-    BrlSketch              sketch,
-    int index
-) {
-    BrlSketchBezier ret = nullptr;
-    if (sketch != nullptr) {
-        Sketch* sIntern = CastSketch(sketch);
-        assert(sIntern != nullptr);
-        if (sIntern != nullptr)
-            ret = new SketchBezierData(sIntern->InsertBezier(index));
-    }
-    return ret;
-}
-
-
-void BrlSketchDeleteSegment
-(
-    BrlSketch              sketch,
-    int index
-) {
-    if (sketch != nullptr) {
-        Sketch* sIntern = CastSketch(sketch);
-        assert(sIntern != nullptr);
-        if (sIntern != nullptr)
-            sIntern->DeleteSegment(index);
-    }
-}
-
-
-const char* BrlSketchClassName(void) {
-    return Sketch::ClassName();
-}
-
-
-int BrlSketchSegmentType
-(
-    BrlSketchSegment       segment
-) {
-    int ret = 0; // Null
     if (segment != nullptr) {
         Sketch::Segment* segIntern = CastSketchSegment(segment);
         assert(segIntern != nullptr);
-        if (segIntern != nullptr)
-            ret = static_cast<int>(segIntern->Type());
-    }
-    return ret;
-}
 
-
-BrlVector3D BrlSketchSegmentStartPoint
-(
-    BrlSketchSegment       segment
-) {
-    BrlVector3D ret = nullptr;
-    if (segment != nullptr) {
-        Sketch::Segment* segIntern = CastSketchSegment(segment);
-        assert(segIntern != nullptr);
         if (segIntern != nullptr) {
-            Vector2D pt = segIntern->StartPoint();
-            ret = new Vector3DData(Vector3D(pt.coordinates[0], pt.coordinates[1], 0.));
-        }
-    }
-    return ret;
-}
+            switch (segIntern->Type()) {
+            case Sketch::Segment::SegmentType::Null:
+                ret = BrlSketchSegmentSegmentTypeNull;
+                break;
 
+            case Sketch::Segment::SegmentType::Line:
+                ret = BrlSketchSegmentSegmentTypeLine;
+                break;
 
-BrlVector3D BrlSketchSegmentEndPoint
-(
-    BrlSketchSegment       segment
-) {
-    BrlVector3D ret = nullptr;
-    if (segment != nullptr) {
-        Sketch::Segment* segIntern = CastSketchSegment(segment);
-        assert(segIntern != nullptr);
-        if (segIntern != nullptr) {
-            Vector2D pt = segIntern->EndPoint();
-            ret = new Vector3DData(Vector3D(pt.coordinates[0], pt.coordinates[1], 0.));
-        }
-    }
-    return ret;
-}
+            case Sketch::Segment::SegmentType::CircularArc:
+                ret = BrlSketchSegmentSegmentTypeCircularArc;
+                break;
 
+            case Sketch::Segment::SegmentType::Nurb:
+                ret = BrlSketchSegmentSegmentTypeNurb;
+                break;
 
-// Helper to access private members of Sketch::Segment derived classes
-struct SegmentMemoryLayout {
-    void* vptr;
-    struct rt_sketch_internal* m_sketch;
-    void* m_segment;
-};
+            case Sketch::Segment::SegmentType::Bezier:
+                ret = BrlSketchSegmentSegmentTypeBezier;
+                break;
 
-static void* GetSpecificSegment(BRLCAD::Sketch::Segment* seg, struct rt_sketch_internal** sketch_out) {
-    if (!seg) return nullptr;
-    SegmentMemoryLayout* layout = reinterpret_cast<SegmentMemoryLayout*>(seg);
-    if (sketch_out) *sketch_out = layout->m_sketch;
-    return layout->m_segment;
-}
-
-bool BrlSketchSegmentReverse
-(
-    BrlSketchSegment       segment
-) {
-    bool ret = false;
-    if (segment != nullptr) {
-        Sketch::Segment* segIntern = CastSketchSegment(segment);
-        assert(segIntern != nullptr);
-        if (segIntern != nullptr) {
-            struct rt_sketch_internal* sketch = nullptr;
-            void* internal_seg = GetSpecificSegment(segIntern, &sketch);
-            if (sketch && internal_seg) {
-                for (int i = 0; i < sketch->curve.count; ++i) {
-                    if (sketch->curve.segment[i] == internal_seg) {
-                        ret = (sketch->curve.reverse[i] != 0);
-                        break;
-                    }
-                }
+            default:
+                ret = BrlSketchSegmentSegmentTypeNull;
             }
         }
     }
+
+    return ret;
+}
+
+
+BrlSketchSegment BrlSketchSegmentClone
+(
+    BrlSketchSegment segment
+) {
+    BrlSketchSegment ret = nullptr;
+
+    if (segment != nullptr) {
+        Sketch::Segment* segIntern = CastSketchSegment(segment);
+        assert(segIntern != nullptr);
+
+        if (segIntern != nullptr)
+            ret = DowncastSketchSegment(segIntern->Clone());
+    }
+
+    return ret;
+}
+
+
+BrlVector2D BrlSketchSegmentStartPoint
+(
+    BrlSketchSegment segment
+) {
+    BrlVector2D ret = nullptr;
+
+    if (segment != nullptr) {
+        Sketch::Segment* segIntern = CastSketchSegment(segment);
+        assert(segIntern != nullptr);
+
+        if (segIntern != nullptr)
+            ret = new Vector2DData(segIntern->StartPoint());
+    }
+
+    return ret;
+}
+
+
+void BrlSketchSegmentSetStartPoint
+(
+    BrlSketchSegment segment,
+    double           x, double y
+) {
+    if (segment != nullptr) {
+        Sketch::Segment* segIntern = CastSketchSegment(segment);
+        assert(segIntern != nullptr);
+
+        if (segIntern != nullptr)
+            segIntern->SetStartPoint(Vector2D(x, y));
+    }
+}
+
+
+BrlVector2D BrlSketchSegmentEndPoint
+(
+    BrlSketchSegment segment
+) {
+    BrlVector2D ret = nullptr;
+
+    if (segment != nullptr) {
+        Sketch::Segment* segIntern = CastSketchSegment(segment);
+        assert(segIntern != nullptr);
+
+        if (segIntern != nullptr)
+            ret = new Vector2DData(segIntern->EndPoint());
+    }
+
+    return ret;
+}
+
+
+void BrlSketchSegmentSetEndPoint
+(
+    BrlSketchSegment segment,
+    double           x, double y
+) {
+    if (segment != nullptr) {
+        Sketch::Segment* segIntern = CastSketchSegment(segment);
+        assert(segIntern != nullptr);
+
+        if (segIntern != nullptr)
+            segIntern->SetEndPoint(Vector2D(x, y));
+    }
+}
+
+
+int BrlSketchSegmentReverse
+(
+    BrlSketchSegment segment
+) {
+    int ret = 0;
+
+    if (segment != nullptr) {
+        Sketch::Segment* segIntern = CastSketchSegment(segment);
+        assert(segIntern != nullptr);
+
+        if (segIntern != nullptr)
+            ret = segIntern->Reverse() ? 1 : 0;
+    }
+
     return ret;
 }
 
 
 void BrlSketchSegmentSetReverse
 (
-    BrlSketchSegment       segment,
-    bool                   reverse
+    BrlSketchSegment segment,
+    int              reverse
 ) {
     if (segment != nullptr) {
         Sketch::Segment* segIntern = CastSketchSegment(segment);
         assert(segIntern != nullptr);
-        if (segIntern != nullptr) {
-            struct rt_sketch_internal* sketch = nullptr;
-            void* internal_seg = GetSpecificSegment(segIntern, &sketch);
-            if (sketch && internal_seg) {
-                for (int i = 0; i < sketch->curve.count; ++i) {
-                    if (sketch->curve.segment[i] == internal_seg) {
-                        sketch->curve.reverse[i] = reverse ? 1 : 0;
-                        break;
-                    }
-                }
-            }
-        }
+
+        if (segIntern != nullptr)
+            segIntern->SetReverse(reverse != 0);
     }
 }
 
 
-BrlSketchLine BrlCastToSketchLine
+BrlVector2D BrlSketchCircularArcCenter
 (
-    BrlSketchSegment       segment
+    BrlSketchCircularArc arc
 ) {
-    BrlSketchLine ret = nullptr;
-    if (segment != nullptr) {
-        Sketch::Segment* segIntern = CastSketchSegment(segment);
-        assert(segIntern != nullptr);
-        if (segIntern != nullptr && segIntern->Type() == Sketch::Segment::SegmentType::Line)
-            ret = new SketchLineData(dynamic_cast<Sketch::Line*>(segIntern));
-    }
-    return ret;
-}
+    BrlVector2D ret = nullptr;
 
-
-BrlSketchCircularArc BrlCastToSketchCircularArc
-(
-    BrlSketchSegment       segment
-) {
-    BrlSketchCircularArc ret = nullptr;
-    if (segment != nullptr) {
-        Sketch::Segment* segIntern = CastSketchSegment(segment);
-        assert(segIntern != nullptr);
-        if (segIntern != nullptr && segIntern->Type() == Sketch::Segment::SegmentType::CircularArc)
-            ret = new SketchCircularArcData(dynamic_cast<Sketch::CircularArc*>(segIntern));
-    }
-    return ret;
-}
-
-
-BrlSketchNurb BrlCastToSketchNurb
-(
-    BrlSketchSegment       segment
-) {
-    BrlSketchNurb ret = nullptr;
-    if (segment != nullptr) {
-        Sketch::Segment* segIntern = CastSketchSegment(segment);
-        assert(segIntern != nullptr);
-        if (segIntern != nullptr && segIntern->Type() == Sketch::Segment::SegmentType::Nurb)
-            ret = new SketchNurbData(dynamic_cast<Sketch::Nurb*>(segIntern));
-    }
-    return ret;
-}
-
-
-BrlSketchBezier BrlCastToSketchBezier
-(
-    BrlSketchSegment       segment
-) {
-    BrlSketchBezier ret = nullptr;
-    if (segment != nullptr) {
-        Sketch::Segment* segIntern = CastSketchSegment(segment);
-        assert(segIntern != nullptr);
-        if (segIntern != nullptr && segIntern->Type() == Sketch::Segment::SegmentType::Bezier)
-            ret = new SketchBezierData(dynamic_cast<Sketch::Bezier*>(segIntern));
-    }
-    return ret;
-}
-
-
-void BrlSketchLineSetStartPoint
-(
-    BrlSketchLine          line,
-    double                 x,
-    double                 y
-) {
-    if (line != nullptr) {
-        Sketch::Line* lineIntern = CastSketchLine(line);
-        assert(lineIntern != nullptr);
-        if (lineIntern != nullptr) {
-            Vector2D pt(x, y);
-            lineIntern->SetStartPoint(pt);
-        }
-    }
-}
-
-
-void BrlSketchLineSetEndPoint
-(
-    BrlSketchLine          line,
-    double                 x,
-    double                 y
-) {
-    if (line != nullptr) {
-        Sketch::Line* lineIntern = CastSketchLine(line);
-        assert(lineIntern != nullptr);
-        if (lineIntern != nullptr) {
-            Vector2D pt(x, y);
-            lineIntern->SetEndPoint(pt);
-        }
-    }
-}
-
-
-void BrlSketchCircularArcSetStartPoint
-(
-    BrlSketchCircularArc   arc,
-    double                 x,
-    double                 y
-) {
     if (arc != nullptr) {
         Sketch::CircularArc* arcIntern = CastSketchCircularArc(arc);
         assert(arcIntern != nullptr);
-        if (arcIntern != nullptr) {
-            Vector2D pt(x, y);
-            arcIntern->SetStartPoint(pt);
-        }
-    }
-}
 
-
-void BrlSketchCircularArcSetEndPoint
-(
-    BrlSketchCircularArc   arc,
-    double                 x,
-    double                 y
-) {
-    if (arc != nullptr) {
-        Sketch::CircularArc* arcIntern = CastSketchCircularArc(arc);
-        assert(arcIntern != nullptr);
-        if (arcIntern != nullptr) {
-            Vector2D pt(x, y);
-            arcIntern->SetEndPoint(pt);
-        }
-    }
-}
-
-
-BrlVector3D BrlSketchCircularArcCenter
-(
-    BrlSketchCircularArc   arc
-) {
-    BrlVector3D ret = nullptr;
-    if (arc != nullptr) {
-        Sketch::CircularArc* arcIntern = CastSketchCircularArc(arc);
-        assert(arcIntern != nullptr);
         if (arcIntern != nullptr)
-            ret = new Vector3DData(arcIntern->Center());
+            ret = new Vector2DData(arcIntern->Center());
     }
+
     return ret;
 }
 
 
 void BrlSketchCircularArcSetCenter
 (
-    BrlSketchCircularArc   arc,
-    double                 x,
-    double                 y
+    BrlSketchCircularArc arc,
+    double                 x, double y
 ) {
     if (arc != nullptr) {
         Sketch::CircularArc* arcIntern = CastSketchCircularArc(arc);
         assert(arcIntern != nullptr);
-        if (arcIntern != nullptr) {
-            Vector2D pt(x, y);
-            arcIntern->SetCenter(pt);
-        }
+
+        if (arcIntern != nullptr)
+            arcIntern->SetCenter(Vector2D(x, y));
     }
 }
 
 
 double BrlSketchCircularArcRadius
 (
-    BrlSketchCircularArc   arc
+    BrlSketchCircularArc arc
 ) {
-    double ret = 0.0;
+    double ret = 0.;
+
     if (arc != nullptr) {
         Sketch::CircularArc* arcIntern = CastSketchCircularArc(arc);
         assert(arcIntern != nullptr);
+
         if (arcIntern != nullptr)
             ret = arcIntern->Radius();
     }
+
     return ret;
 }
 
 
 void BrlSketchCircularArcSetRadius
 (
-    BrlSketchCircularArc   arc,
-    double                 radius
+    BrlSketchCircularArc arc,
+    double               radius
 ) {
     if (arc != nullptr) {
         Sketch::CircularArc* arcIntern = CastSketchCircularArc(arc);
         assert(arcIntern != nullptr);
+
         if (arcIntern != nullptr)
             arcIntern->SetRadius(radius);
     }
 }
 
 
-bool BrlSketchCircularArcCenterIsLeft
+int BrlSketchCircularArcCenterIsLeft
 (
-    BrlSketchCircularArc   arc
+    BrlSketchCircularArc arc
 ) {
-    bool ret = false;
+    int ret = 0;
+
     if (arc != nullptr) {
         Sketch::CircularArc* arcIntern = CastSketchCircularArc(arc);
         assert(arcIntern != nullptr);
+
         if (arcIntern != nullptr)
-            ret = arcIntern->CenterIsLeft();
+            ret = arcIntern->CenterIsLeft() ? 1 : 0;
     }
+
     return ret;
 }
 
 
 void BrlSketchCircularArcSetCenterIsLeft
 (
-    BrlSketchCircularArc   arc,
-    bool                   isLeft
+    BrlSketchCircularArc arc,
+    int                  isLeft
 ) {
     if (arc != nullptr) {
         Sketch::CircularArc* arcIntern = CastSketchCircularArc(arc);
         assert(arcIntern != nullptr);
+
         if (arcIntern != nullptr)
-            arcIntern->SetCenterIsLeft(isLeft);
+            arcIntern->SetCenterIsLeft(isLeft != 0);
     }
 }
 
 
-bool BrlSketchCircularArcClockwiseOriented
+int BrlSketchCircularArcClockwiseOriented
 (
-    BrlSketchCircularArc   arc
+    BrlSketchCircularArc arc
 ) {
-    bool ret = false;
+    int ret = 0;
+
     if (arc != nullptr) {
         Sketch::CircularArc* arcIntern = CastSketchCircularArc(arc);
         assert(arcIntern != nullptr);
+
         if (arcIntern != nullptr)
-            ret = arcIntern->ClockwiseOriented();
+            ret = arcIntern->ClockwiseOriented() ? 1 : 0;
     }
+
     return ret;
 }
 
 
 void BrlSketchCircularArcSetClockwiseOriented
 (
-    BrlSketchCircularArc   arc,
-    bool                   clockwise
+    BrlSketchCircularArc arc,
+    int                  clockwise
 ) {
     if (arc != nullptr) {
         Sketch::CircularArc* arcIntern = CastSketchCircularArc(arc);
         assert(arcIntern != nullptr);
+
         if (arcIntern != nullptr)
-            arcIntern->SetClockwiseOriented(clockwise);
-    }
-}
-
-
-void BrlSketchNurbSetStartPoint
-(
-    BrlSketchNurb          nurb,
-    double                 x,
-    double                 y
-) {
-    if (nurb != nullptr) {
-        Sketch::Nurb* nurbIntern = CastSketchNurb(nurb);
-        assert(nurbIntern != nullptr);
-        if (nurbIntern != nullptr) {
-            Vector2D pt(x, y);
-            nurbIntern->SetStartPoint(pt);
-        }
-    }
-}
-
-
-void BrlSketchNurbSetEndPoint
-(
-    BrlSketchNurb          nurb,
-    double                 x,
-    double                 y
-) {
-    if (nurb != nullptr) {
-        Sketch::Nurb* nurbIntern = CastSketchNurb(nurb);
-        assert(nurbIntern != nullptr);
-        if (nurbIntern != nullptr) {
-            Vector2D pt(x, y);
-            nurbIntern->SetEndPoint(pt);
-        }
+            arcIntern->SetClockwiseOriented(clockwise != 0);
     }
 }
 
 
 int BrlSketchNurbOrder
 (
-    BrlSketchNurb          nurb
+    BrlSketchNurb nurb
 ) {
     int ret = 0;
+
     if (nurb != nullptr) {
         Sketch::Nurb* nurbIntern = CastSketchNurb(nurb);
         assert(nurbIntern != nullptr);
+
         if (nurbIntern != nullptr)
             ret = nurbIntern->Order();
     }
+
     return ret;
 }
 
 
-void BrlSketchNurbSetOrder
+int BrlSketchNurbIsRational
 (
-    BrlSketchNurb          nurb,
-    int order
+    BrlSketchNurb nurb
 ) {
+    int ret = false;
+
     if (nurb != nullptr) {
         Sketch::Nurb* nurbIntern = CastSketchNurb(nurb);
         assert(nurbIntern != nullptr);
-        if (nurbIntern != nullptr)
-            nurbIntern->SetOrder(order);
-    }
-}
 
-
-bool BrlSketchNurbIsRational
-(
-    BrlSketchNurb          nurb
-) {
-    bool ret = false;
-    if (nurb != nullptr) {
-        Sketch::Nurb* nurbIntern = CastSketchNurb(nurb);
-        assert(nurbIntern != nullptr);
         if (nurbIntern != nullptr)
-            ret = nurbIntern->IsRational();
+            ret = nurbIntern->IsRational() ? 1 : 0;
     }
+
     return ret;
 }
 
 
 int BrlSketchNurbNumberOfKnots
 (
-    BrlSketchNurb          nurb
+    BrlSketchNurb nurb
 ) {
     int ret = 0;
+
     if (nurb != nullptr) {
         Sketch::Nurb* nurbIntern = CastSketchNurb(nurb);
         assert(nurbIntern != nullptr);
+
         if (nurbIntern != nullptr)
             ret = nurbIntern->NumberOfKnots();
     }
+
     return ret;
 }
 
 
 double BrlSketchNurbKnot
 (
-    BrlSketchNurb          nurb,
-    int index
+    BrlSketchNurb nurb,
+    int           index
 ) {
-    double ret = 0.0;
+    double ret = 0.;
+
     if (nurb != nullptr) {
         Sketch::Nurb* nurbIntern = CastSketchNurb(nurb);
         assert(nurbIntern != nullptr);
+
         if (nurbIntern != nullptr)
             ret = nurbIntern->Knot(index);
     }
+
     return ret;
-}
-
-
-void BrlSketchNurbAddKnot
-(
-    BrlSketchNurb          nurb,
-    double                 knot
-) {
-    if (nurb != nullptr) {
-        Sketch::Nurb* nurbIntern = CastSketchNurb(nurb);
-        assert(nurbIntern != nullptr);
-        if (nurbIntern != nullptr)
-            nurbIntern->AddKnot(knot);
-    }
 }
 
 
 int BrlSketchNurbNumberOfControlPoints
 (
-    BrlSketchNurb          nurb
+    BrlSketchNurb nurb
 ) {
     int ret = 0;
+
     if (nurb != nullptr) {
         Sketch::Nurb* nurbIntern = CastSketchNurb(nurb);
         assert(nurbIntern != nullptr);
+
         if (nurbIntern != nullptr)
             ret = nurbIntern->NumberOfControlPoints();
     }
+
     return ret;
 }
 
 
-BrlVector3D BrlSketchNurbControlPoint
+BrlVector2D BrlSketchNurbControlPoint
 (
-    BrlSketchNurb          nurb,
-    int index
+    BrlSketchNurb nurb,
+    int           index
 ) {
-    BrlVector3D ret = nullptr;
+    BrlVector2D ret = nullptr;
+
     if (nurb != nullptr) {
         Sketch::Nurb* nurbIntern = CastSketchNurb(nurb);
         assert(nurbIntern != nullptr);
-        if (nurbIntern != nullptr) {
-            Vector2D pt = nurbIntern->ControlPoint(index);
-            ret = new Vector3DData(Vector3D(pt.coordinates[0], pt.coordinates[1], 0.));
-        }
+
+        if (nurbIntern != nullptr)
+            ret = new Vector2DData(nurbIntern->ControlPoint(index));
     }
+
     return ret;
 }
 
 
 double BrlSketchNurbControlPointWeight
 (
-    BrlSketchNurb          nurb,
-    int index
+    BrlSketchNurb nurb,
+    int           index
 ) {
-    double ret = 0.0;
+    double ret = 0.;
+
     if (nurb != nullptr) {
         Sketch::Nurb* nurbIntern = CastSketchNurb(nurb);
         assert(nurbIntern != nullptr);
+
         if (nurbIntern != nullptr)
             ret = nurbIntern->ControlPointWeight(index);
     }
+
     return ret;
+}
+
+
+void BrlSketchNurbSetOrder
+(
+    BrlSketchNurb nurb,
+    int           order
+) {
+    if (nurb != nullptr) {
+        Sketch::Nurb* nurbIntern = CastSketchNurb(nurb);
+        assert(nurbIntern != nullptr);
+
+        if (nurbIntern != nullptr)
+            nurbIntern->SetOrder(order);
+    }
+}
+
+
+void BrlSketchNurbAddKnot
+(
+    BrlSketchNurb nurb,
+    double        knot
+) {
+    if (nurb != nullptr) {
+        Sketch::Nurb* nurbIntern = CastSketchNurb(nurb);
+        assert(nurbIntern != nullptr);
+
+        if (nurbIntern != nullptr)
+            nurbIntern->AddKnot(knot);
+    }
 }
 
 
 void BrlSketchNurbAddControlPoint
 (
-    BrlSketchNurb          nurb,
-    double                 x,
-    double                 y
+    BrlSketchNurb nurb,
+    double        x, double y
 ) {
     if (nurb != nullptr) {
         Sketch::Nurb* nurbIntern = CastSketchNurb(nurb);
         assert(nurbIntern != nullptr);
-        if (nurbIntern != nullptr) {
-            Vector2D pt(x, y);
-            nurbIntern->AddControlPoint(pt);
-        }
+
+        if (nurbIntern != nullptr)
+            nurbIntern->AddControlPoint(Vector2D(x, y));
     }
 }
 
 
 void BrlSketchNurbAddControlPointWeight
 (
-    BrlSketchNurb          nurb,
-    double                 x,
-    double                 y,
-    double                 weight
+    BrlSketchNurb nurb,
+    double        x, double y,
+    double        weight
 ) {
     if (nurb != nullptr) {
         Sketch::Nurb* nurbIntern = CastSketchNurb(nurb);
         assert(nurbIntern != nullptr);
-        if (nurbIntern != nullptr) {
-            Vector2D pt(x, y);
-            nurbIntern->AddControlPointWeight(pt, weight);
-        }
-    }
-}
 
-
-void BrlSketchBezierSetStartPoint
-(
-    BrlSketchBezier        bezier,
-    double                 x,
-    double                 y
-) {
-    if (bezier != nullptr) {
-        Sketch::Bezier* bezierIntern = CastSketchBezier(bezier);
-        assert(bezierIntern != nullptr);
-        if (bezierIntern != nullptr) {
-            Vector2D pt(x, y);
-            bezierIntern->SetStartPoint(pt);
-        }
-    }
-}
-
-
-void BrlSketchBezierSetEndPoint
-(
-    BrlSketchBezier        bezier,
-    double                 x,
-    double                 y
-) {
-    if (bezier != nullptr) {
-        Sketch::Bezier* bezierIntern = CastSketchBezier(bezier);
-        assert(bezierIntern != nullptr);
-        if (bezierIntern != nullptr) {
-            Vector2D pt(x, y);
-            bezierIntern->SetEndPoint(pt);
-        }
+        if (nurbIntern != nullptr)
+            nurbIntern->AddControlPointWeight(Vector2D(x, y), weight);
     }
 }
 
 
 int BrlSketchBezierDegree
 (
-    BrlSketchBezier        bezier
+    BrlSketchBezier bezier
 ) {
     int ret = 0;
+
     if (bezier != nullptr) {
         Sketch::Bezier* bezierIntern = CastSketchBezier(bezier);
         assert(bezierIntern != nullptr);
+
         if (bezierIntern != nullptr)
             ret = bezierIntern->Degree();
     }
+
     return ret;
 }
 
 
-BrlVector3D BrlSketchBezierControlPoint
+BrlVector2D BrlSketchBezierControlPoint
 (
-    BrlSketchBezier        bezier,
-    int index
+    BrlSketchBezier bezier,
+    int             index
 ) {
-    BrlVector3D ret = nullptr;
+    BrlVector2D ret = nullptr;
+
     if (bezier != nullptr) {
         Sketch::Bezier* bezierIntern = CastSketchBezier(bezier);
         assert(bezierIntern != nullptr);
-        if (bezierIntern != nullptr) {
-            Vector2D pt = bezierIntern->ControlPoint(index);
-            ret = new Vector3DData(Vector3D(pt.coordinates[0], pt.coordinates[1], 0.));
-        }
+
+        if (bezierIntern != nullptr)
+            ret = new Vector3DData(bezierIntern->ControlPoint(index));
     }
+
     return ret;
 }
 
 
 void BrlSketchBezierAddControlPoint
 (
-    BrlSketchBezier        bezier,
-    double                 x,
-    double                 y
+    BrlSketchBezier bezier,
+    double          x, double y
 ) {
     if (bezier != nullptr) {
         Sketch::Bezier* bezierIntern = CastSketchBezier(bezier);
         assert(bezierIntern != nullptr);
-        if (bezierIntern != nullptr) {
-            Vector2D pt(x, y);
-            bezierIntern->AddControlPoint(pt);
-        }
+
+        if (bezierIntern != nullptr)
+            bezierIntern->AddControlPoint(Vector2D(x, y));
     }
+}
+
+
+int BrlSketchNumberOfSegments
+(
+    BrlSketch sketch
+) {
+    int ret = 0;
+
+    if (sketch != nullptr) {
+        Sketch* sIntern = CastSketch(sketch);
+        assert(sIntern != nullptr);
+
+        if (sIntern != nullptr)
+            ret = sIntern->NumberOfSegments();
+    }
+
+    return ret;
+}
+
+
+BrlSketchSegment BrlSketchGetSegment
+(
+    BrlSketch sketch,
+    int       index
+) {
+    BrlSketchSegment ret = nullptr;
+
+    if (sketch != nullptr) {
+        Sketch* sIntern = CastSketch(sketch);
+        assert(sIntern != nullptr);
+
+        if (sIntern != nullptr)
+            ret = new SketchSegmentData(sIntern->Get(index));
+    }
+
+    return ret;
+}
+
+
+BrlSketchLine BrlSketchAppendLine
+(
+    BrlSketch sketch
+) {
+    BrlSketchLine ret = nullptr;
+
+    if (sketch != nullptr) {
+        Sketch* sIntern = CastSketch(sketch);
+        assert(sIntern != nullptr);
+
+        if (sIntern != nullptr)
+            ret = new SketchLineData(sIntern->AppendLine());
+    }
+
+    return ret;
+}
+
+
+BrlSketchLine BrlSketchInsertLine
+(
+    BrlSketch sketch,
+    int       index
+) {
+    BrlSketchLine ret = nullptr;
+
+    if (sketch != nullptr) {
+        Sketch* sIntern = CastSketch(sketch);
+        assert(sIntern != nullptr);
+
+        if (sIntern != nullptr)
+            ret = new SketchLineData(sIntern->InsertLine(index));
+    }
+
+    return ret;
+}
+
+
+BrlSketchCircularArc BrlSketchAppendArc
+(
+    BrlSketch sketch
+) {
+    BrlSketchCircularArc ret = nullptr;
+
+    if (sketch != nullptr) {
+        Sketch* sIntern = CastSketch(sketch);
+        assert(sIntern != nullptr);
+
+        if (sIntern != nullptr)
+            ret = new SketchCircularArcData(sIntern->AppendArc());
+    }
+
+    return ret;
+}
+
+
+BrlSketchCircularArc BrlSketchInsertArc
+(
+    BrlSketch sketch,
+    int       index
+) {
+    BrlSketchCircularArc ret = nullptr;
+
+    if (sketch != nullptr) {
+        Sketch* sIntern = CastSketch(sketch);
+        assert(sIntern != nullptr);
+
+        if (sIntern != nullptr)
+            ret = new SketchCircularArcData(sIntern->InsertArc(index));
+    }
+
+    return ret;
+}
+
+
+BrlSketchNurb BrlSketchAppendNurb
+(
+    BrlSketch sketch
+) {
+    BrlSketchNurb ret = nullptr;
+
+    if (sketch != nullptr) {
+        Sketch* sIntern = CastSketch(sketch);
+        assert(sIntern != nullptr);
+
+        if (sIntern != nullptr)
+            ret = new SketchNurbData(sIntern->AppendNurb());
+    }
+
+    return ret;
+}
+
+
+BrlSketchNurb BrlSketchInsertNurb
+(
+    BrlSketch sketch,
+    int       index
+) {
+    BrlSketchNurb ret = nullptr;
+
+    if (sketch != nullptr) {
+        Sketch* sIntern = CastSketch(sketch);
+        assert(sIntern != nullptr);
+
+        if (sIntern != nullptr)
+            ret = new SketchNurbData(sIntern->InsertNurb(index));
+    }
+
+    return ret;
+}
+
+
+BrlSketchBezier BrlSketchAppendBezier
+(
+    BrlSketch sketch
+) {
+    BrlSketchBezier ret = nullptr;
+
+    if (sketch != nullptr) {
+        Sketch* sIntern = CastSketch(sketch);
+        assert(sIntern != nullptr);
+
+        if (sIntern != nullptr)
+            ret = new SketchBezierData(sIntern->AppendBezier());
+    }
+
+    return ret;
+}
+
+
+BrlSketchBezier BrlSketchInsertBezier
+(
+    BrlSketch sketch,
+    int       index
+) {
+    BrlSketchBezier ret = nullptr;
+
+    if (sketch != nullptr) {
+        Sketch* sIntern = CastSketch(sketch);
+        assert(sIntern != nullptr);
+
+        if (sIntern != nullptr)
+            ret = new SketchBezierData(sIntern->InsertBezier(index));
+    }
+
+    return ret;
+}
+
+
+void BrlSketchDeleteSegment
+(
+    BrlSketch sketch,
+    int       index
+) {
+    if (sketch != nullptr) {
+        Sketch* sIntern = CastSketch(sketch);
+        assert(sIntern != nullptr);
+
+        if (sIntern != nullptr)
+            sIntern->DeleteSegment(index);
+    }
+}
+
+
+BrlVector3D BrlSketchEmbeddingPlaneX
+(
+    BrlSketch sketch
+) {
+    BrlVector3D ret = nullptr;
+
+    if (sketch != nullptr) {
+        Sketch* sIntern = CastSketch(sketch);
+        assert(sIntern != nullptr);
+
+        if (sIntern != nullptr)
+            ret = new Vector3DData(sIntern->EmbeddingPlaneX());
+    }
+
+    return ret;
+}
+
+
+BrlVector3D BrlSketchEmbeddingPlaneY
+(
+    BrlSketch sketch
+) {
+    BrlVector3D ret = nullptr;
+
+    if (sketch != nullptr) {
+        Sketch* sIntern = CastSketch(sketch);
+        assert(sIntern != nullptr);
+
+        if (sIntern != nullptr)
+            ret = new Vector3DData(sIntern->EmbeddingPlaneY());
+    }
+
+    return ret;
+}
+
+
+void BrlSketchSetEmbeddingPlaneX
+(
+    BrlSketch sketch,
+    double    x, double y, double z
+) {
+    if (sketch != nullptr) {
+        Sketch* sIntern = CastSketch(sketch);
+        assert(sIntern != nullptr);
+
+        if (sIntern != nullptr)
+            sIntern->SetEmbeddingPlaneX(Vector3D(x, y, z));
+    }
+}
+
+
+void BrlSketchSetEmbeddingPlaneY
+(
+    BrlSketch sketch,
+    double    x, double y, double z
+) {
+    if (sketch != nullptr) {
+        Sketch* sIntern = CastSketch(sketch);
+        assert(sIntern != nullptr);
+
+        if (sIntern != nullptr)
+            sIntern->SetEmbeddingPlaneY(Vector3D(x, y, z));
+    }
+}
+
+
+BrlVector3D BrlSketchEmbeddingPlaneOrigin
+(
+    BrlSketch sketch
+) {
+    BrlVector3D ret = nullptr;
+
+    if (sketch != nullptr) {
+        Sketch* sIntern = CastSketch(sketch);
+        assert(sIntern != nullptr);
+
+        if (sIntern != nullptr)
+            ret = new Vector3DData(sIntern->EmbeddingPlaneOrigin());
+    }
+
+    return ret;
+}
+
+
+void BrlSketchSetEmbeddingPlaneOrigin
+(
+    BrlSketch sketch,
+    double    x, double y, double z
+) {
+    if (sketch != nullptr) {
+        Sketch* sIntern = CastSketch(sketch);
+        assert(sIntern != nullptr);
+
+        if (sIntern != nullptr)
+            sIntern->SetEmbeddingPlaneOrigin(Vector3D(x, y, z));
+    }
+}
+
+
+const char* BrlSketchClassName(void) {
+    return Sketch::ClassName();
 }

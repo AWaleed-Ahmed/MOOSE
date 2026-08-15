@@ -68,6 +68,49 @@ class VectorListElement(Handle):
             return None
         return _lib.BrlVectorListElementGetType(self._handle)
 
+    def cast(self):
+        t = self.element_type
+        if t == ElementType.PointDraw:
+            new_obj = VectorListPointDraw(handle=self._handle)
+        elif t == ElementType.PointSize:
+            new_obj = VectorListPointSize(handle=self._handle)
+        elif t == ElementType.LineMove:
+            new_obj = VectorListLineMove(handle=self._handle)
+        elif t == ElementType.LineDraw:
+            new_obj = VectorListLineDraw(handle=self._handle)
+        elif t == ElementType.LineWidth:
+            new_obj = VectorListLineWidth(handle=self._handle)
+        elif t == ElementType.TriangleStart:
+            new_obj = VectorListTriangleStart(handle=self._handle)
+        elif t == ElementType.TriangleMove:
+            new_obj = VectorListTriangleMove(handle=self._handle)
+        elif t == ElementType.TriangleDraw:
+            new_obj = VectorListTriangleDraw(handle=self._handle)
+        elif t == ElementType.TriangleEnd:
+            new_obj = VectorListTriangleEnd(handle=self._handle)
+        elif t == ElementType.TriangleVertexNormal:
+            new_obj = VectorListTriangleVertexNormal(handle=self._handle)
+        elif t == ElementType.PolygonStart:
+            new_obj = VectorListPolygonStart(handle=self._handle)
+        elif t == ElementType.PolygonMove:
+            new_obj = VectorListPolygonMove(handle=self._handle)
+        elif t == ElementType.PolygonDraw:
+            new_obj = VectorListPolygonDraw(handle=self._handle)
+        elif t == ElementType.PolygonEnd:
+            new_obj = VectorListPolygonEnd(handle=self._handle)
+        elif t == ElementType.PolygonVertexNormal:
+            new_obj = VectorListPolygonVertexNormal(handle=self._handle)
+        elif t == ElementType.DisplaySpace:
+            new_obj = VectorListDisplaySpace(handle=self._handle)
+        elif t == ElementType.ModelSpace:
+            new_obj = VectorListModelSpace(handle=self._handle)
+        else:
+            return self
+            
+        new_obj._owned = self._owned
+        self._owned = False
+        return new_obj
+
 
 class VectorListPointDraw(VectorListElement):
     def __init__(self, point=None, handle=None, owned=True):
@@ -374,4 +417,7 @@ class VectorList(Handle):
         """Secondary write helper."""
         if not self._handle or not element._handle:
             return False
-        return _lib.BrlVectorListAppend(self._handle, element._handle) != 0
+        res = _lib.BrlVectorListAppend(self._handle, element._handle) != 0
+        if res:
+            element._owned = False
+        return res

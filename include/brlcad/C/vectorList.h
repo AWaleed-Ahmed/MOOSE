@@ -75,23 +75,6 @@ BRLCAD_MOOSE_EXPORT void                       BrlVectorListIterate(BrlVectorLis
 BRLCAD_MOOSE_EXPORT enum BrlVectorListElementType BrlVectorListElementGetType(BrlVectorListElement element);
 
 
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListDisplaySpace(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListLineDraw(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListLineMove(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListLineWidth(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListModelSpace(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListPointDraw(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListPointSize(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListPolygonDraw(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListPolygonEnd(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListPolygonMove(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListPolygonStart(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListPolygonVertexNormal(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListTriangleDraw(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListTriangleEnd(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListTriangleMove(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListTriangleStart(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListTriangleVertexNormal(BrlVectorListElement element);
 
 
 BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListDisplaySpaceReferencePoint(BrlVectorListElement element);

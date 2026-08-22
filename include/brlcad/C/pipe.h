@@ -23,7 +23,6 @@
  *      declares a handle and functions for Pipe solid handling
  */
 
-
 #ifndef BRLCAD_C_PIPE_INCLUDED
 #define BRLCAD_C_PIPE_INCLUDED
 

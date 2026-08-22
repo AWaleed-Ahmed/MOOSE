@@ -588,7 +588,7 @@ BrlVector2D BrlSketchBezierControlPoint
         assert(bezierIntern != nullptr);
 
         if (bezierIntern != nullptr)
-            ret = new Vector3DData(bezierIntern->ControlPoint(index));
+            ret = new Vector2DData(bezierIntern->ControlPoint(index));
     }
 
     return ret;

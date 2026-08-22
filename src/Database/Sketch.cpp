@@ -399,8 +399,8 @@ void Sketch::Line::SetEndPoint
 // CircularArc class
 //
 
-Vector3D Sketch::CircularArc::Center(void) const {
-    Vector3D ret;
+Vector2D Sketch::CircularArc::Center(void) const {
+    Vector2D ret;
 
     assert(m_circularArcSegment != nullptr);
     assert(m_sketch != nullptr);
@@ -412,10 +412,10 @@ Vector3D Sketch::CircularArc::Center(void) const {
             VJOIN2(center, m_sketch->V, m_sketch->verts[m_circularArcSegment->end][0],
             m_sketch->u_vec, m_sketch->verts[m_circularArcSegment->end][1], m_sketch->v_vec);
 
-            ret = Vector3D(center);
+            ret = Vector2D(center);
         }
         else
-            ret = Vector3D(m_sketch->verts[m_circularArcSegment->center]);
+            ret = Vector2D(m_sketch->verts[m_circularArcSegment->center]);
     }
 
     return ret;
@@ -423,7 +423,7 @@ Vector3D Sketch::CircularArc::Center(void) const {
 
 
 void Sketch::CircularArc::SetCenter(
-    Vector2D c
+    const Vector2D& c
 ) {
     assert(m_circularArcSegment != nullptr);
     assert(m_sketch != nullptr);
@@ -1349,7 +1349,7 @@ Vector3D Sketch::EmbeddingPlaneY(void) const  {
 
 void Sketch::SetEmbeddingPlaneX
 (
-    Vector3D& u
+    const Vector3D& u
 ) {
     for (size_t i = 0; i < 3; ++i)
         Internal()->u_vec[i] = u.coordinates[i];
@@ -1358,7 +1358,7 @@ void Sketch::SetEmbeddingPlaneX
 
 void Sketch::SetEmbeddingPlaneY
 (
-    Vector3D& v
+    const Vector3D& v
 ) {
     for (size_t i = 0; i < 3; ++i)
         Internal()->v_vec[i] = v.coordinates[i];
@@ -1372,7 +1372,7 @@ Vector3D Sketch::EmbeddingPlaneOrigin(void) const {
 
 void Sketch::SetEmbeddingPlaneOrigin
 (
-    Vector3D& p
+    const Vector3D& p
 ) {
     Internal()->V[0] = p.coordinates[0];
     Internal()->V[1] = p.coordinates[1];

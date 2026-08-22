@@ -133,8 +133,8 @@ namespace BRLCAD {
             Vector2D           EndPoint(void) const override;
             void               SetEndPoint(const Vector2D& endPoint) override;
 
-            Vector3D           Center(void) const;
-            void               SetCenter(Vector2D c);
+            Vector2D           Center(void) const;
+            void               SetCenter(const Vector2D& c);
             double             Radius(void) const;
             void               SetRadius(double radius);
             bool               CenterIsLeft(void) const;
@@ -182,7 +182,8 @@ namespace BRLCAD {
             void        SetOrder(size_t order);
             void        AddKnot(double knot);
             void        AddControlPoint(const Vector2D& Point);
-            void        AddControlPointWeight(const Vector2D& Point, double weight);
+            void        AddControlPointWeight(const Vector2D& Point,
+                                              double          weight);
 
         private:
             nurb_seg* m_nurbSegment;
@@ -253,10 +254,10 @@ namespace BRLCAD {
 
         Vector3D           EmbeddingPlaneX(void) const;
         Vector3D           EmbeddingPlaneY(void) const;
-        void               SetEmbeddingPlaneX(Vector3D& u);
-        void               SetEmbeddingPlaneY(Vector3D& v);
+        void               SetEmbeddingPlaneX(const Vector3D& u);
+        void               SetEmbeddingPlaneY(const Vector3D& v);
         Vector3D           EmbeddingPlaneOrigin(void) const;
-        void               SetEmbeddingPlaneOrigin(Vector3D& point);
+        void               SetEmbeddingPlaneOrigin(const Vector3D& point);
 
         // inherited from BRLCAD::Object
         const Object&      operator=(const Object& original) override;

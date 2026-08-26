@@ -36,10 +36,11 @@ extern "C" {
 
 
 typedef BrlHandle BrlVectorList;
+typedef BrlHandle BrlVectorListElement;
 
 
 enum BrlVectorListElementType {
-    BrlVectorListElementTypePointDraw,
+    BrlVectorListElementTypePointDraw = 0,
     BrlVectorListElementTypePointSize,
     BrlVectorListElementTypeLineMove,
     BrlVectorListElementTypeLineDraw,
@@ -69,10 +70,6 @@ typedef int (*BrlVectorListCallback)(BrlVectorListElement element,
 BRLCAD_MOOSE_EXPORT void                       BrlVectorListIterate(BrlVectorList         vlist,
                                                                     BrlVectorListCallback callback,
                                                                     void*                 userdata);
-
-
-
-typedef BrlHandle BrlVectorListElement;
 
 
 BRLCAD_MOOSE_EXPORT enum BrlVectorListElementType BrlVectorListElementGetType(BrlVectorListElement element);

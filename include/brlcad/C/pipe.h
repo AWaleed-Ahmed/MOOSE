@@ -35,10 +35,13 @@ extern "C" {
 
 
 typedef BrlObject BrlPipe;
-typedef BrlHandle BrlPipeControlPoint;
 
 
 BRLCAD_MOOSE_EXPORT BrlPipe             BrlNewPipe(void);
+
+
+typedef BrlHandle BrlPipeControlPoint;
+
 
 BRLCAD_MOOSE_EXPORT int                 BrlPipeNumberOfControlPoints(BrlPipe pipe);
 BRLCAD_MOOSE_EXPORT BrlPipeControlPoint BrlPipeGetControlPoint(BrlPipe pipe,

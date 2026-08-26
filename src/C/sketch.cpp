@@ -246,10 +246,8 @@ BrlVector2D BrlSketchCircularArcCenter
         Sketch::CircularArc* arcIntern = CastSketchCircularArc(arc);
         assert(arcIntern != nullptr);
 
-        if (arcIntern != nullptr) {
-            BRLCAD::Vector3D c = arcIntern->Center();
-            ret = new Vector2DData(BRLCAD::Vector2D(c.coordinates[0], c.coordinates[1]));
-        }
+        if (arcIntern != nullptr)
+            ret = new Vector2DData(arcIntern->Center());
     }
 
     return ret;
@@ -857,10 +855,8 @@ void BrlSketchSetEmbeddingPlaneX
         Sketch* sIntern = CastSketch(sketch);
         assert(sIntern != nullptr);
 
-        if (sIntern != nullptr) {
-            Vector3D v(x, y, z);
-            sIntern->SetEmbeddingPlaneX(v);
-        }
+        if (sIntern != nullptr)
+            sIntern->SetEmbeddingPlaneX(Vector3D(x, y, z));
     }
 }
 
@@ -874,10 +870,8 @@ void BrlSketchSetEmbeddingPlaneY
         Sketch* sIntern = CastSketch(sketch);
         assert(sIntern != nullptr);
 
-        if (sIntern != nullptr) {
-            Vector3D v(x, y, z);
-            sIntern->SetEmbeddingPlaneY(v);
-        }
+        if (sIntern != nullptr)
+            sIntern->SetEmbeddingPlaneY(Vector3D(x, y, z));
     }
 }
 
@@ -909,10 +903,8 @@ void BrlSketchSetEmbeddingPlaneOrigin
         Sketch* sIntern = CastSketch(sketch);
         assert(sIntern != nullptr);
 
-        if (sIntern != nullptr) {
-            Vector3D v(x, y, z);
-            sIntern->SetEmbeddingPlaneOrigin(v);
-        }
+        if (sIntern != nullptr)
+            sIntern->SetEmbeddingPlaneOrigin(Vector3D(x, y, z));
     }
 }
 

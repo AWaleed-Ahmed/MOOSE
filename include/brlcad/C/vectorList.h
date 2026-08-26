@@ -36,7 +36,6 @@ extern "C" {
 
 
 typedef BrlHandle BrlVectorList;
-typedef BrlHandle BrlVectorListElement;
 
 
 enum BrlVectorListElementType {
@@ -72,76 +71,97 @@ BRLCAD_MOOSE_EXPORT void                       BrlVectorListIterate(BrlVectorLis
                                                                     void*                 userdata);
 
 
+
+typedef BrlHandle BrlVectorListElement;
+
+
 BRLCAD_MOOSE_EXPORT enum BrlVectorListElementType BrlVectorListElementGetType(BrlVectorListElement element);
 
 
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListPointDraw(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListPointSize(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListLineMove(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListLineDraw(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListLineWidth(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListTriangleStart(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListTriangleMove(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListTriangleDraw(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListTriangleEnd(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListTriangleVertexNormal(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListPolygonStart(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListPolygonMove(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListPolygonDraw(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListPolygonEnd(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListPolygonVertexNormal(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListDisplaySpace(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlCastToVectorListModelSpace(BrlVectorListElement element);
 
 
-BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListDisplaySpaceReferencePoint(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListLineDrawPoint(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListLineMovePoint(BrlVectorListElement element);
 BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListPointDrawPoint(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListPolygonDrawPoint(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListPolygonEndPoint(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListPolygonMovePoint(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListPolygonStartNormal(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListPolygonVertexNormalNormal(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT double                     BrlVectorListPointSizeSize(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListLineMovePoint(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListLineDrawPoint(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT double                     BrlVectorListLineWidthWidth(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListTriangleStartNormal(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListTriangleMovePoint(BrlVectorListElement element);
 BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListTriangleDrawPoint(BrlVectorListElement element);
 BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListTriangleEndPoint(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListTriangleMovePoint(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListTriangleStartNormal(BrlVectorListElement element);
 BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListTriangleVertexNormalNormal(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT double                     BrlVectorListLineWidthWidth(BrlVectorListElement element);
-BRLCAD_MOOSE_EXPORT double                     BrlVectorListPointSizeSize(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListPolygonStartNormal(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListPolygonMovePoint(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListPolygonDrawPoint(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListPolygonEndPoint(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListPolygonVertexNormalNormal(BrlVectorListElement element);
+BRLCAD_MOOSE_EXPORT BrlVector3D                BrlVectorListDisplaySpaceReferencePoint(BrlVectorListElement element);
 
 BRLCAD_MOOSE_EXPORT int                        BrlVectorListAppend(BrlVectorList        vlist,
                                                                    BrlVectorListElement element);
 
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListDisplaySpace(double x,
-                                                                            double y,
-                                                                            double z);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListLineDraw(double x,
-                                                                        double y,
-                                                                        double z);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListLineMove(double x,
-                                                                        double y,
-                                                                        double z);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListLineWidth(double width);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListModelSpace(void);
 BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListPointDraw(double x,
                                                                          double y,
                                                                          double z);
 BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListPointSize(double size);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListPolygonDraw(double x,
-                                                                           double y,
-                                                                           double z);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListPolygonEnd(double x,
-                                                                          double y,
-                                                                          double z);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListPolygonMove(double x,
-                                                                           double y,
-                                                                           double z);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListPolygonStart(double nx,
-                                                                            double ny,
-                                                                            double nz);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListPolygonVertexNormal(double nx,
-                                                                                   double ny,
-                                                                                   double nz);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListLineMove(double x,
+                                                                        double y,
+                                                                        double z);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListLineDraw(double x,
+                                                                        double y,
+                                                                        double z);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListLineWidth(double width);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListTriangleStart(double nx,
+                                                                             double ny,
+                                                                             double nz);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListTriangleMove(double x,
+                                                                            double y,
+                                                                            double z);
 BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListTriangleDraw(double x,
                                                                             double y,
                                                                             double z);
 BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListTriangleEnd(double x,
                                                                            double y,
                                                                            double z);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListTriangleMove(double x,
-                                                                            double y,
-                                                                            double z);
-BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListTriangleStart(double nx,
-                                                                             double ny,
-                                                                             double nz);
 BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListTriangleVertexNormal(double nx,
                                                                                     double ny,
                                                                                     double nz);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListPolygonStart(double nx,
+                                                                            double ny,
+                                                                            double nz);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListPolygonMove(double x,
+                                                                           double y,
+                                                                           double z);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListPolygonDraw(double x,
+                                                                           double y,
+                                                                           double z);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListPolygonEnd(double x,
+                                                                          double y,
+                                                                          double z);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListPolygonVertexNormal(double nx,
+                                                                                   double ny,
+                                                                                   double nz);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListDisplaySpace(double x,
+                                                                            double y,
+                                                                            double z);
+BRLCAD_MOOSE_EXPORT BrlVectorListElement       BrlNewVectorListModelSpace(void);
 
 
 #ifdef __cplusplus

@@ -1020,10 +1020,18 @@ BRLCAD::VectorList::PointDraw* CastVectorListPointDraw
 ) {
     BRLCAD::VectorList::PointDraw* ret = nullptr;
     if (handle != nullptr) {
-        if (handle->Magic() == VectorListPointDrawMagic)
+        if (handle->Magic() == VectorListPointDrawMagic) {
             ret = static_cast<VectorListPointDrawData*>(handle)->Pointer();
-        else
+        } else if (handle->Magic() == VectorListElementMagic) {
+            BRLCAD::VectorList::Element* el = static_cast<VectorListElementData*>(handle)->Pointer();
+            if (el != nullptr && el->Type() == BRLCAD::VectorList::Element::ElementType::PointDraw) {
+                ret = static_cast<BRLCAD::VectorList::PointDraw*>(el);
+            } else {
+                bu_log("CastVectorListPointDraw: wrong element type inside generic handle");
+            }
+        } else {
             bu_log("CastVectorListPointDraw: wrong handle");
+        }
     }
     return ret;
 }
@@ -1034,10 +1042,18 @@ BRLCAD::VectorList::PointSize* CastVectorListPointSize
 ) {
     BRLCAD::VectorList::PointSize* ret = nullptr;
     if (handle != nullptr) {
-        if (handle->Magic() == VectorListPointSizeMagic)
+        if (handle->Magic() == VectorListPointSizeMagic) {
             ret = static_cast<VectorListPointSizeData*>(handle)->Pointer();
-        else
+        } else if (handle->Magic() == VectorListElementMagic) {
+            BRLCAD::VectorList::Element* el = static_cast<VectorListElementData*>(handle)->Pointer();
+            if (el != nullptr && el->Type() == BRLCAD::VectorList::Element::ElementType::PointSize) {
+                ret = static_cast<BRLCAD::VectorList::PointSize*>(el);
+            } else {
+                bu_log("CastVectorListPointSize: wrong element type inside generic handle");
+            }
+        } else {
             bu_log("CastVectorListPointSize: wrong handle");
+        }
     }
     return ret;
 }
@@ -1048,10 +1064,18 @@ BRLCAD::VectorList::LineMove* CastVectorListLineMove
 ) {
     BRLCAD::VectorList::LineMove* ret = nullptr;
     if (handle != nullptr) {
-        if (handle->Magic() == VectorListLineMoveMagic)
+        if (handle->Magic() == VectorListLineMoveMagic) {
             ret = static_cast<VectorListLineMoveData*>(handle)->Pointer();
-        else
+        } else if (handle->Magic() == VectorListElementMagic) {
+            BRLCAD::VectorList::Element* el = static_cast<VectorListElementData*>(handle)->Pointer();
+            if (el != nullptr && el->Type() == BRLCAD::VectorList::Element::ElementType::LineMove) {
+                ret = static_cast<BRLCAD::VectorList::LineMove*>(el);
+            } else {
+                bu_log("CastVectorListLineMove: wrong element type inside generic handle");
+            }
+        } else {
             bu_log("CastVectorListLineMove: wrong handle");
+        }
     }
     return ret;
 }
@@ -1062,10 +1086,18 @@ BRLCAD::VectorList::LineDraw* CastVectorListLineDraw
 ) {
     BRLCAD::VectorList::LineDraw* ret = nullptr;
     if (handle != nullptr) {
-        if (handle->Magic() == VectorListLineDrawMagic)
+        if (handle->Magic() == VectorListLineDrawMagic) {
             ret = static_cast<VectorListLineDrawData*>(handle)->Pointer();
-        else
+        } else if (handle->Magic() == VectorListElementMagic) {
+            BRLCAD::VectorList::Element* el = static_cast<VectorListElementData*>(handle)->Pointer();
+            if (el != nullptr && el->Type() == BRLCAD::VectorList::Element::ElementType::LineDraw) {
+                ret = static_cast<BRLCAD::VectorList::LineDraw*>(el);
+            } else {
+                bu_log("CastVectorListLineDraw: wrong element type inside generic handle");
+            }
+        } else {
             bu_log("CastVectorListLineDraw: wrong handle");
+        }
     }
     return ret;
 }
@@ -1076,10 +1108,18 @@ BRLCAD::VectorList::LineWidth* CastVectorListLineWidth
 ) {
     BRLCAD::VectorList::LineWidth* ret = nullptr;
     if (handle != nullptr) {
-        if (handle->Magic() == VectorListLineWidthMagic)
+        if (handle->Magic() == VectorListLineWidthMagic) {
             ret = static_cast<VectorListLineWidthData*>(handle)->Pointer();
-        else
+        } else if (handle->Magic() == VectorListElementMagic) {
+            BRLCAD::VectorList::Element* el = static_cast<VectorListElementData*>(handle)->Pointer();
+            if (el != nullptr && el->Type() == BRLCAD::VectorList::Element::ElementType::LineWidth) {
+                ret = static_cast<BRLCAD::VectorList::LineWidth*>(el);
+            } else {
+                bu_log("CastVectorListLineWidth: wrong element type inside generic handle");
+            }
+        } else {
             bu_log("CastVectorListLineWidth: wrong handle");
+        }
     }
     return ret;
 }
@@ -1090,10 +1130,18 @@ BRLCAD::VectorList::TriangleStart* CastVectorListTriangleStart
 ) {
     BRLCAD::VectorList::TriangleStart* ret = nullptr;
     if (handle != nullptr) {
-        if (handle->Magic() == VectorListTriangleStartMagic)
+        if (handle->Magic() == VectorListTriangleStartMagic) {
             ret = static_cast<VectorListTriangleStartData*>(handle)->Pointer();
-        else
+        } else if (handle->Magic() == VectorListElementMagic) {
+            BRLCAD::VectorList::Element* el = static_cast<VectorListElementData*>(handle)->Pointer();
+            if (el != nullptr && el->Type() == BRLCAD::VectorList::Element::ElementType::TriangleStart) {
+                ret = static_cast<BRLCAD::VectorList::TriangleStart*>(el);
+            } else {
+                bu_log("CastVectorListTriangleStart: wrong element type inside generic handle");
+            }
+        } else {
             bu_log("CastVectorListTriangleStart: wrong handle");
+        }
     }
     return ret;
 }
@@ -1104,10 +1152,18 @@ BRLCAD::VectorList::TriangleMove* CastVectorListTriangleMove
 ) {
     BRLCAD::VectorList::TriangleMove* ret = nullptr;
     if (handle != nullptr) {
-        if (handle->Magic() == VectorListTriangleMoveMagic)
+        if (handle->Magic() == VectorListTriangleMoveMagic) {
             ret = static_cast<VectorListTriangleMoveData*>(handle)->Pointer();
-        else
+        } else if (handle->Magic() == VectorListElementMagic) {
+            BRLCAD::VectorList::Element* el = static_cast<VectorListElementData*>(handle)->Pointer();
+            if (el != nullptr && el->Type() == BRLCAD::VectorList::Element::ElementType::TriangleMove) {
+                ret = static_cast<BRLCAD::VectorList::TriangleMove*>(el);
+            } else {
+                bu_log("CastVectorListTriangleMove: wrong element type inside generic handle");
+            }
+        } else {
             bu_log("CastVectorListTriangleMove: wrong handle");
+        }
     }
     return ret;
 }
@@ -1118,10 +1174,18 @@ BRLCAD::VectorList::TriangleDraw* CastVectorListTriangleDraw
 ) {
     BRLCAD::VectorList::TriangleDraw* ret = nullptr;
     if (handle != nullptr) {
-        if (handle->Magic() == VectorListTriangleDrawMagic)
+        if (handle->Magic() == VectorListTriangleDrawMagic) {
             ret = static_cast<VectorListTriangleDrawData*>(handle)->Pointer();
-        else
+        } else if (handle->Magic() == VectorListElementMagic) {
+            BRLCAD::VectorList::Element* el = static_cast<VectorListElementData*>(handle)->Pointer();
+            if (el != nullptr && el->Type() == BRLCAD::VectorList::Element::ElementType::TriangleDraw) {
+                ret = static_cast<BRLCAD::VectorList::TriangleDraw*>(el);
+            } else {
+                bu_log("CastVectorListTriangleDraw: wrong element type inside generic handle");
+            }
+        } else {
             bu_log("CastVectorListTriangleDraw: wrong handle");
+        }
     }
     return ret;
 }
@@ -1132,10 +1196,18 @@ BRLCAD::VectorList::TriangleEnd* CastVectorListTriangleEnd
 ) {
     BRLCAD::VectorList::TriangleEnd* ret = nullptr;
     if (handle != nullptr) {
-        if (handle->Magic() == VectorListTriangleEndMagic)
+        if (handle->Magic() == VectorListTriangleEndMagic) {
             ret = static_cast<VectorListTriangleEndData*>(handle)->Pointer();
-        else
+        } else if (handle->Magic() == VectorListElementMagic) {
+            BRLCAD::VectorList::Element* el = static_cast<VectorListElementData*>(handle)->Pointer();
+            if (el != nullptr && el->Type() == BRLCAD::VectorList::Element::ElementType::TriangleEnd) {
+                ret = static_cast<BRLCAD::VectorList::TriangleEnd*>(el);
+            } else {
+                bu_log("CastVectorListTriangleEnd: wrong element type inside generic handle");
+            }
+        } else {
             bu_log("CastVectorListTriangleEnd: wrong handle");
+        }
     }
     return ret;
 }
@@ -1146,10 +1218,18 @@ BRLCAD::VectorList::TriangleVertexNormal* CastVectorListTriangleVertexNormal
 ) {
     BRLCAD::VectorList::TriangleVertexNormal* ret = nullptr;
     if (handle != nullptr) {
-        if (handle->Magic() == VectorListTriangleVertexNormalMagic)
+        if (handle->Magic() == VectorListTriangleVertexNormalMagic) {
             ret = static_cast<VectorListTriangleVertexNormalData*>(handle)->Pointer();
-        else
+        } else if (handle->Magic() == VectorListElementMagic) {
+            BRLCAD::VectorList::Element* el = static_cast<VectorListElementData*>(handle)->Pointer();
+            if (el != nullptr && el->Type() == BRLCAD::VectorList::Element::ElementType::TriangleVertexNormal) {
+                ret = static_cast<BRLCAD::VectorList::TriangleVertexNormal*>(el);
+            } else {
+                bu_log("CastVectorListTriangleVertexNormal: wrong element type inside generic handle");
+            }
+        } else {
             bu_log("CastVectorListTriangleVertexNormal: wrong handle");
+        }
     }
     return ret;
 }
@@ -1160,10 +1240,18 @@ BRLCAD::VectorList::PolygonStart* CastVectorListPolygonStart
 ) {
     BRLCAD::VectorList::PolygonStart* ret = nullptr;
     if (handle != nullptr) {
-        if (handle->Magic() == VectorListPolygonStartMagic)
+        if (handle->Magic() == VectorListPolygonStartMagic) {
             ret = static_cast<VectorListPolygonStartData*>(handle)->Pointer();
-        else
+        } else if (handle->Magic() == VectorListElementMagic) {
+            BRLCAD::VectorList::Element* el = static_cast<VectorListElementData*>(handle)->Pointer();
+            if (el != nullptr && el->Type() == BRLCAD::VectorList::Element::ElementType::PolygonStart) {
+                ret = static_cast<BRLCAD::VectorList::PolygonStart*>(el);
+            } else {
+                bu_log("CastVectorListPolygonStart: wrong element type inside generic handle");
+            }
+        } else {
             bu_log("CastVectorListPolygonStart: wrong handle");
+        }
     }
     return ret;
 }
@@ -1174,10 +1262,18 @@ BRLCAD::VectorList::PolygonMove* CastVectorListPolygonMove
 ) {
     BRLCAD::VectorList::PolygonMove* ret = nullptr;
     if (handle != nullptr) {
-        if (handle->Magic() == VectorListPolygonMoveMagic)
+        if (handle->Magic() == VectorListPolygonMoveMagic) {
             ret = static_cast<VectorListPolygonMoveData*>(handle)->Pointer();
-        else
+        } else if (handle->Magic() == VectorListElementMagic) {
+            BRLCAD::VectorList::Element* el = static_cast<VectorListElementData*>(handle)->Pointer();
+            if (el != nullptr && el->Type() == BRLCAD::VectorList::Element::ElementType::PolygonMove) {
+                ret = static_cast<BRLCAD::VectorList::PolygonMove*>(el);
+            } else {
+                bu_log("CastVectorListPolygonMove: wrong element type inside generic handle");
+            }
+        } else {
             bu_log("CastVectorListPolygonMove: wrong handle");
+        }
     }
     return ret;
 }
@@ -1188,10 +1284,18 @@ BRLCAD::VectorList::PolygonDraw* CastVectorListPolygonDraw
 ) {
     BRLCAD::VectorList::PolygonDraw* ret = nullptr;
     if (handle != nullptr) {
-        if (handle->Magic() == VectorListPolygonDrawMagic)
+        if (handle->Magic() == VectorListPolygonDrawMagic) {
             ret = static_cast<VectorListPolygonDrawData*>(handle)->Pointer();
-        else
+        } else if (handle->Magic() == VectorListElementMagic) {
+            BRLCAD::VectorList::Element* el = static_cast<VectorListElementData*>(handle)->Pointer();
+            if (el != nullptr && el->Type() == BRLCAD::VectorList::Element::ElementType::PolygonDraw) {
+                ret = static_cast<BRLCAD::VectorList::PolygonDraw*>(el);
+            } else {
+                bu_log("CastVectorListPolygonDraw: wrong element type inside generic handle");
+            }
+        } else {
             bu_log("CastVectorListPolygonDraw: wrong handle");
+        }
     }
     return ret;
 }
@@ -1202,10 +1306,18 @@ BRLCAD::VectorList::PolygonEnd* CastVectorListPolygonEnd
 ) {
     BRLCAD::VectorList::PolygonEnd* ret = nullptr;
     if (handle != nullptr) {
-        if (handle->Magic() == VectorListPolygonEndMagic)
+        if (handle->Magic() == VectorListPolygonEndMagic) {
             ret = static_cast<VectorListPolygonEndData*>(handle)->Pointer();
-        else
+        } else if (handle->Magic() == VectorListElementMagic) {
+            BRLCAD::VectorList::Element* el = static_cast<VectorListElementData*>(handle)->Pointer();
+            if (el != nullptr && el->Type() == BRLCAD::VectorList::Element::ElementType::PolygonEnd) {
+                ret = static_cast<BRLCAD::VectorList::PolygonEnd*>(el);
+            } else {
+                bu_log("CastVectorListPolygonEnd: wrong element type inside generic handle");
+            }
+        } else {
             bu_log("CastVectorListPolygonEnd: wrong handle");
+        }
     }
     return ret;
 }
@@ -1216,10 +1328,18 @@ BRLCAD::VectorList::PolygonVertexNormal* CastVectorListPolygonVertexNormal
 ) {
     BRLCAD::VectorList::PolygonVertexNormal* ret = nullptr;
     if (handle != nullptr) {
-        if (handle->Magic() == VectorListPolygonVertexNormalMagic)
+        if (handle->Magic() == VectorListPolygonVertexNormalMagic) {
             ret = static_cast<VectorListPolygonVertexNormalData*>(handle)->Pointer();
-        else
+        } else if (handle->Magic() == VectorListElementMagic) {
+            BRLCAD::VectorList::Element* el = static_cast<VectorListElementData*>(handle)->Pointer();
+            if (el != nullptr && el->Type() == BRLCAD::VectorList::Element::ElementType::PolygonVertexNormal) {
+                ret = static_cast<BRLCAD::VectorList::PolygonVertexNormal*>(el);
+            } else {
+                bu_log("CastVectorListPolygonVertexNormal: wrong element type inside generic handle");
+            }
+        } else {
             bu_log("CastVectorListPolygonVertexNormal: wrong handle");
+        }
     }
     return ret;
 }
@@ -1230,10 +1350,18 @@ BRLCAD::VectorList::DisplaySpace* CastVectorListDisplaySpace
 ) {
     BRLCAD::VectorList::DisplaySpace* ret = nullptr;
     if (handle != nullptr) {
-        if (handle->Magic() == VectorListDisplaySpaceMagic)
+        if (handle->Magic() == VectorListDisplaySpaceMagic) {
             ret = static_cast<VectorListDisplaySpaceData*>(handle)->Pointer();
-        else
+        } else if (handle->Magic() == VectorListElementMagic) {
+            BRLCAD::VectorList::Element* el = static_cast<VectorListElementData*>(handle)->Pointer();
+            if (el != nullptr && el->Type() == BRLCAD::VectorList::Element::ElementType::DisplaySpace) {
+                ret = static_cast<BRLCAD::VectorList::DisplaySpace*>(el);
+            } else {
+                bu_log("CastVectorListDisplaySpace: wrong element type inside generic handle");
+            }
+        } else {
             bu_log("CastVectorListDisplaySpace: wrong handle");
+        }
     }
     return ret;
 }
@@ -1244,10 +1372,18 @@ BRLCAD::VectorList::ModelSpace* CastVectorListModelSpace
 ) {
     BRLCAD::VectorList::ModelSpace* ret = nullptr;
     if (handle != nullptr) {
-        if (handle->Magic() == VectorListModelSpaceMagic)
+        if (handle->Magic() == VectorListModelSpaceMagic) {
             ret = static_cast<VectorListModelSpaceData*>(handle)->Pointer();
-        else
+        } else if (handle->Magic() == VectorListElementMagic) {
+            BRLCAD::VectorList::Element* el = static_cast<VectorListElementData*>(handle)->Pointer();
+            if (el != nullptr && el->Type() == BRLCAD::VectorList::Element::ElementType::ModelSpace) {
+                ret = static_cast<BRLCAD::VectorList::ModelSpace*>(el);
+            } else {
+                bu_log("CastVectorListModelSpace: wrong element type inside generic handle");
+            }
+        } else {
             bu_log("CastVectorListModelSpace: wrong handle");
+        }
     }
     return ret;
 }
